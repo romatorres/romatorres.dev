@@ -34,3 +34,33 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## DOCKER
+
+- Para subir o container:
+  docker-compose up -d
+
+- Para testar o container:
+  docker ps
+
+- Para executar o banco:
+  docker exec -it postgres-local psql -U admin -d meubanco_dev
+
+- Para parar o container
+  docker-compose down
+
+Para ver as novas tabelas dentro do contêiner, você pode usar o cliente psql diretamente no contêiner do Docker.
+
+1.  Conecte-se ao contêiner:
+    Abra seu terminal e execute:
+    1 docker exec -it romatorres psql -U admin -d romatorres_dev
+    Quando pedir a senha, digite roma410012.
+
+2.  Dentro do `psql`:
+    _ Para listar todas as tabelas no banco de dados, digite:
+    1 \dt
+    _ Para ver a estrutura de uma tabela específica (por exemplo, User), digite:
+
+1 \d User  
+ \* Para sair do psql, digite:  
+ 1 \q
