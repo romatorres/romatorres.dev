@@ -2,13 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
-import { Session } from "@/lib/auth";
 
-interface AdminHeaderProps {
-  user: Session["user"];
-}
-
-export function AdminHeader({ user }: AdminHeaderProps) {
+export function AdminHeader(/* { user }: AdminHeaderProps */) {
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="flex items-center justify-between h-16 px-6">
@@ -19,7 +14,6 @@ export function AdminHeader({ user }: AdminHeaderProps) {
 
         {/* Right side */}
         <div className="flex items-center space-x-4">
-          <span className="text-sm text-gray-600">Olá, {user?.name}</span>
           {/* Notifications */}
           <Button variant="ghost" size="sm" className="relative">
             <Bell className="h-5 w-5" />
