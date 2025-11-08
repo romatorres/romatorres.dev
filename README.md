@@ -53,14 +53,13 @@ Para ver as novas tabelas dentro do contêiner, você pode usar o cliente psql d
 
 1.  Conecte-se ao contêiner:
     Abra seu terminal e execute:
-    1 docker exec -it romatorres psql -U admin -d romatorres_dev
+    docker exec -it romatorres psql -U admin -d romatorres_dev
     Quando pedir a senha, digite roma410012.
 
 2.  Dentro do `psql`:
-    _ Para listar todas as tabelas no banco de dados, digite:
-    1 \dt
-    _ Para ver a estrutura de uma tabela específica (por exemplo, User), digite:
-
-1 \d User  
- \* Para sair do psql, digite:  
- 1 \q
+    \_ Para listar todas as tabelas no banco de dados, digite:
+    \dt
+    \_ Para ver a estrutura de uma tabela específica (por exemplo, User), digite:
+    \d User
+    \_Para sair do psql, digite:  
+     \q
