@@ -1,12 +1,39 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import About from "@/components/landingpage/About";
+import Contacts from "@/components/landingpage/Contacts";
+import Footer from "@/components/landingpage/Footer";
+import Header from "@/components/landingpage/Header";
+import Hero from "@/components/landingpage/Hero";
+import Projects from "@/components/landingpage/Projects";
+import Services from "@/components/landingpage/Services";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center">
-      <Link href="/login">
-        <Button className="cursor-pointer">Faça o Login</Button>
-      </Link>
-    </div>
+    <>
+      <section id="header">
+        <Header />
+      </section>
+
+      <section>
+        <Hero />
+      </section>
+
+      <section id="about">
+        <About />
+      </section>
+
+      <section id="services">
+        <Services />
+      </section>
+
+      <section id="projects">
+        <Projects />
+      </section>
+
+      <section id="contacts">
+        <Contacts />
+      </section>
+
+      <Footer />
+    </>
   );
 }
