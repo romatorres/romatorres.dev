@@ -54,6 +54,10 @@
   }
 }
 
+body {
+  font-family: var(--font-secondary);
+}
+
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {

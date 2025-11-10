@@ -70,13 +70,16 @@ export default function Services() {
           ))}
         </div>
         <div className="flex flex-col justify-center md:flex-row gap-4 mt-20">
-          <Button onClick={handleHireClick} className="w-full md:w-auto">
+          <Button
+            onClick={handleHireClick}
+            className="w-full md:w-auto px-12 rounded-xs"
+          >
             CONTRATAR
           </Button>
           <Button
             onClick={(e) => scrollToSection(e, "projects")}
             variant="outline"
-            className="w-full md:w-auto"
+            className="w-full md:w-auto border-white rounded-xs px-8 text-white bg-background hover:bg-black-foreground"
           >
             MEUS TRABALHOS
           </Button>

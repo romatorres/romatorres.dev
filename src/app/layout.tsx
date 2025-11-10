@@ -27,7 +27,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pr-BR" className="bg-linear-to-t from-[#060606] to-[#030303]">
-      <body className={`${oswald.variable} ${openSans.variable} antialiased`}>
+      <body
+        className={`${oswald.variable} ${openSans.variable} ${openSans.className} antialiased`}
+        cz-shortcut-listen="true"
+      >
         {children}
         <Toaster richColors closeButton />
       </body>

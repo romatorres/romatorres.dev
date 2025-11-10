@@ -49,7 +49,7 @@ export default function Hero() {
       <div className="container mx-auto flex flex-col lg:flex-row justify-between items-center px-4">
         {/* Bloco "ROLAR SCROLL" na vertical - moved outside container */}
         <div className="hidden lg:flex flex-col items-start mb-8 lg:mb-0 order-3 lg:order-1">
-          <p className="writing-mode-vertical-lr rotate-180 text-xs font-secondary text-secondary animate-tremor cursor-pointer">
+          <p className="writing-mode-vertical-lr rotate--180 text-xs font-secondary text-secondary animate-tremor cursor-pointer">
             <a href="#about" onClick={(e) => scrollToSection(e, "about")}>
               ROLAR SCROLL &#x2192;
             </a>
@@ -112,11 +112,18 @@ export default function Hero() {
       </div>
       <div className="flex flex-col items-center gap-4 mt-20">
         <div className="flex gap-4">
-          <Button onClick={handleHireClick}>CONTRATAR</Button>
+          <Button
+            variant="default"
+            onClick={handleHireClick}
+            className="px-16 rounded-xs"
+          >
+            CONTRATAR
+          </Button>
 
           <Button
             variant="outline"
             onClick={(e) => scrollToSection(e, "projects")}
+            className="border-white rounded-xs px-14 text-white bg-background hover:bg-black-foreground"
           >
             MEUS TRABALHOS
           </Button>

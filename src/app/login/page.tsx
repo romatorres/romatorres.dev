@@ -7,15 +7,15 @@ export default function Login() {
       <div className="flex w-lg flex-col items-center justify-center p-6">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold">Login</h1>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <h1 className="text-3xl font-bold text-white">Login</h1>
+            <p className="mt-4 text-gray-300">
               Entre com suas credenciais para acessar sua conta
             </p>
           </div>
 
           <LoginForm />
 
-          <div className="text-center text-sm">
+          <div className="text-center text-sm text-gray-300">
             <p>
               Não tem uma conta?{" "}
               <Link
