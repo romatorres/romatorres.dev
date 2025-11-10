@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Download, Calendar, BarChart3, TrendingUp, Users, FileText } from "lucide-react";
+import {
+  Download,
+  Calendar,
+  BarChart3,
+  TrendingUp,
+  Users,
+  FileText,
+} from "lucide-react";
 
 const reports = [
   {
@@ -36,13 +43,15 @@ const reports = [
   },
 ];
 
-export default function ReportsPage() {
+export default function ProjectsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Relatórios</h1>
-          <p className="text-gray-600">Visualize e baixe relatórios do sistema</p>
+          <p className="text-gray-600">
+            Visualize e baixe relatórios do sistema
+          </p>
         </div>
         <Button>
           <Calendar className="h-4 w-4 mr-2" />
@@ -55,7 +64,9 @@ export default function ReportsPage() {
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Relatórios Gerados</p>
+              <p className="text-sm font-medium text-gray-600">
+                Relatórios Gerados
+              </p>
               <p className="text-2xl font-bold text-gray-900">24</p>
             </div>
             <BarChart3 className="h-8 w-8 text-blue-600" />
@@ -103,8 +114,8 @@ export default function ReportsPage() {
             </div>
             <div className="mt-4 flex items-center justify-between">
               <div className="text-sm text-gray-500">
-                <span className="font-medium">{report.type}</span> • 
-                Último: {report.lastGenerated}
+                <span className="font-medium">{report.type}</span> • Último:{" "}
+                {report.lastGenerated}
               </div>
               <div className="flex space-x-2">
                 <Button variant="outline" size="sm">

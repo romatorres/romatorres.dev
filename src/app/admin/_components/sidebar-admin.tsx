@@ -8,12 +8,12 @@ import {
   LayoutDashboard,
   Users,
   Settings,
-  BarChart3,
   Menu,
   X,
   User,
   ChevronUp,
   ChevronDown,
+  LibraryBig,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +28,7 @@ import { ButtonSignOut } from "./button-signout";
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Usuários", href: "/admin/users", icon: Users },
-  { name: "Relatórios", href: "/admin/reports", icon: BarChart3 },
+  { name: "Projetos", href: "/admin/projects", icon: LibraryBig },
   { name: "Configurações", href: "/admin/settings", icon: Settings },
 ];
 
