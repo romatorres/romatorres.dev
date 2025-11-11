@@ -30,7 +30,7 @@ export const useProjectStore = create<ProjectState>()(
     loading: false,
     error: null,
     fetchProjects: async () => {
-      if (get().projects.length > 0) {
+      if (get().project.length > 0) {
         return; // Evita a busca se os dados já estiverem carregados
       }
       set({ loading: true, error: null });
@@ -63,7 +63,7 @@ export const useProjectStore = create<ProjectState>()(
         }
         const data = await response.json();
         set((state) => ({
-          agendas: [...state.projects, data],
+          agendas: [...state.project, data],
           loading: false,
         }));
       } catch (error: unknown) {
@@ -87,7 +87,7 @@ export const useProjectStore = create<ProjectState>()(
         }
         const data = await response.json();
         set((state) => ({
-          projects: state.projects.map((project) =>
+          projects: state.project.map((project) =>
             project.id === id ? data : project
           ),
           loading: false,
@@ -108,7 +108,7 @@ export const useProjectStore = create<ProjectState>()(
           throw new Error("Erro ao excluir um projeto.");
         }
         set((state) => ({
-          projects: state.projects.filter((project) => project.id !== id),
+          projects: state.project.filter((project) => project.id !== id),
           loading: false,
         }));
       } catch (error: unknown) {
@@ -118,7 +118,7 @@ export const useProjectStore = create<ProjectState>()(
       }
     },
     setSelectedProject: (project) => {
-      set({ selectedProject: project });
+      set({ selectedProjects: project });
     },
   }))
 );

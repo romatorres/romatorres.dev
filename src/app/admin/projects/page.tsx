@@ -1,12 +1,18 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Download,
   BarChart3,
   TrendingUp,
   Users,
   FileText,
   Plus,
+  Trash2,
+  FilePenLine,
+  Loader2,
 } from "lucide-react";
+import { useProjectStore } from "@/stores/projectsStores";
 
 const reports = [
   {
@@ -44,6 +50,20 @@ const reports = [
 ];
 
 export default function ProjectsPage() {
+  const {
+    project,
+    selectedProjects,
+    deleteProject,
+    error,
+    loading,
+    setSelectedProject,
+    fetchProjects,
+  } = useProjectStore();
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -59,7 +79,16 @@ export default function ProjectsPage() {
         </Button>
       </div>
 
-      {/* Reports grid */}
+      {/* Loading State */}
+
+      {loading && (
+        <div>
+          <Loader2 className="h-8 w-8 animate-spin text-primary mr-3" />
+          <p>Carregando projetos...</p>
+        </div>
+      )}
+
+      {/* Projects grid */}
       <div className="flex gap-6">
         {reports.map((report) => (
           <div
@@ -86,11 +115,12 @@ export default function ProjectsPage() {
               </div>
               <div className="flex space-x-2">
                 <Button variant="ghost" size="sm">
-                  Visualizar
+                  <FilePenLine className="h-4 w-4 mr-1" />
+                  Editar
                 </Button>
                 <Button variant="ghost" size="sm" className="text-destructive">
-                  <Download className="h-4 w-4 mr-1" />
-                  Baixar
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  Excluir
                 </Button>
               </div>
             </div>
