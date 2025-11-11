@@ -24,11 +24,11 @@ export async function POST(request: Request) {
 
     return NextResponse.json(project, { status: 201 });
   } catch (error: unknown) {
-    console.error("Error creating agenda:", error);
+    console.error("Error creating project:", error);
     const errorMessage =
       error instanceof Error
         ? error.message
-        : "Erro ao criar evento na agenda.";
+        : "Erro ao criar um projeto.";
     return NextResponse.json(
       { message: errorMessage },
       { status: errorMessage.includes("permissão") ? 403 : 500 }
@@ -41,9 +41,9 @@ export async function GET() {
     const project = await listProjects();
     return NextResponse.json(project);
   } catch (error: unknown) {
-    console.error("Error fetching agenda:", error);
+    console.error("Error fetching project:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Erro ao buscar agenda.";
+      error instanceof Error ? error.message : "Erro ao buscar um projeto.";
     return NextResponse.json(
       { message: errorMessage },
       { status: errorMessage.includes("permissão") ? 403 : 500 }

@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import {
   Download,
-  Calendar,
   BarChart3,
   TrendingUp,
   Users,
   FileText,
+  Plus,
 } from "lucide-react";
 
 const reports = [
@@ -54,46 +54,13 @@ export default function ProjectsPage() {
           </p>
         </div>
         <Button>
-          <Calendar className="h-4 w-4 mr-2" />
-          Agendar Relatório
+          <Plus className="h-4 w-4 mr-2" />
+          Projeto
         </Button>
       </div>
 
-      {/* Quick stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">
-                Relatórios Gerados
-              </p>
-              <p className="text-2xl font-bold text-gray-900">24</p>
-            </div>
-            <BarChart3 className="h-8 w-8 text-blue-600" />
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Este Mês</p>
-              <p className="text-2xl font-bold text-gray-900">8</p>
-            </div>
-            <Calendar className="h-8 w-8 text-green-600" />
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Agendados</p>
-              <p className="text-2xl font-bold text-gray-900">3</p>
-            </div>
-            <TrendingUp className="h-8 w-8 text-purple-600" />
-          </div>
-        </div>
-      </div>
-
       {/* Reports grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="flex gap-6">
         {reports.map((report) => (
           <div
             key={report.id}
@@ -118,10 +85,10 @@ export default function ProjectsPage() {
                 {report.lastGenerated}
               </div>
               <div className="flex space-x-2">
-                <Button variant="outline" size="sm">
+                <Button variant="ghost" size="sm">
                   Visualizar
                 </Button>
-                <Button size="sm">
+                <Button variant="ghost" size="sm" className="text-destructive">
                   <Download className="h-4 w-4 mr-1" />
                   Baixar
                 </Button>
