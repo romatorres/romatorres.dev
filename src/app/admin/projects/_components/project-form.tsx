@@ -1,0 +1,245 @@
+"use client";
+
+import { useEffect } from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Loader2, MapPin, FileText, Type } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormDescription,
+} from "@/components/ui/form";
+import { toast } from "sonner";
+import { useProjectStore } from "@/stores/projectsStores";
+import { Switch } from "@/components/ui/switch";
+
+const formSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "O título é obrigatório." })
+    .min(3, { message: "O título deve ter pelo menos 3 caracteres." })
+    .max(100, { message: "O título deve ter no máximo 100 caracteres." }),
+  imageUrl: z.string(),
+  link: z.string().optional(),
+  description: z
+    .string()
+    .max(500, { message: "Os detalhes devem ter no máximo 500 caracteres." }),
+  isActive: z.boolean(),
+});
+
+type FormValues = z.infer<typeof formSchema> & { ativo: boolean };
+
+interface AgendaFormProps {
+  onSuccess?: () => void;
+}
+
+export function ProjectForm({ onSuccess }: AgendaFormProps) {
+  const { createProject, updateProject, selectedProject, setSelectedProject } =
+    useProjectStore();
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      imageUrl: "",
+      description: "",
+      link: "",
+      isActive: true,
+    },
+  });
+
+  const {
+    formState: { isSubmitting },
+    watch,
+  } = form;
+
+  const isEditing = !!selectedProject?.id;
+  const watchedDetalhes = watch("description");
+
+  useEffect(() => {
+    if (isEditing && selectedProject?.id) {
+      form.reset({
+        title: selectedProject.title || "",
+        imageUrl: selectedProject.imageUrl || "",
+        description: selectedProject.description || "",
+        link: selectedProject.link || "",
+        isActive: selectedProject.isActive ?? true,
+      });
+    } else {
+      form.reset({
+        title: "",
+        imageUrl: "",
+        description: "",
+        link: "",
+        isActive: true,
+      });
+    }
+  }, [selectedProject, form, isEditing]);
+
+  const onSubmit = async (values: FormValues) => {
+    try {
+      const dataToSubmit = {
+        title: values.title,
+        imageUrl: values.imageUrl,
+        description: values.description,
+        link: values.link,
+        isActive: values.isActive,
+      };
+
+      if (isEditing) {
+        await updateProject(selectedProject.id!, dataToSubmit);
+        toast.success("Projeto atualizado com sucesso!");
+      } else {
+        await createProject(dataToSubmit);
+        toast.success("Projeto criado com sucesso!");
+      }
+
+      setSelectedProject(null);
+      onSuccess?.();
+    } catch (error) {
+      console.error("Erro ao salvar projeto:", error);
+      toast.error("Ocorreu um erro ao salvar o projeto.");
+    }
+  };
+
+  const handleCancel = () => {
+    setSelectedProject(null);
+    onSuccess?.();
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="flex items-center text-foreground font-medium">
+                <Type className="h-4 w-4 mr-2 text-disco-purple" />
+                Título do Projeto
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="admin-input"
+                  placeholder="Ex: Reunião de equipe, Workshop, Apresentação..."
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="text-xs text-muted-foreground">
+                {field.value?.length || 0}/100 caracteres
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="imageUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="flex items-center text-foreground font-medium">
+                <MapPin className="h-4 w-4 mr-2 text-disco-blue" />
+                Imagem do projeto
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="admin-input"
+                  placeholder="Ex: Sala de reuniões, Auditório, Online..."
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="text-xs text-muted-foreground">
+                {field.value?.length || 0}/200 caracteres
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="detalhes"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="flex items-center text-foreground font-medium">
+                <FileText className="h-4 w-4 mr-2 text-disco-green" />
+                Detalhes (Opcional)
+              </FormLabel>
+              <FormControl>
+                <Textarea
+                  className="admin-textarea min-h-[100px]"
+                  placeholder="Adicione informações extras sobre o evento, agenda, participantes, materiais necessários..."
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="text-xs text-muted-foreground">
+                {watchedDetalhes?.length || 0}/500 caracteres
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {isEditing && (
+          <FormField
+            control={form.control}
+            name="ativo"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel className="text-base">Ativar Evento</FormLabel>
+                  <FormDescription>
+                    Define se o evento estará visível na página principal.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
+
+        <div className="flex justify-end gap-3 pt-4 border-t border-border">
+          <Button
+            type="button"
+            variant="secondary"
+            className="admin-button-secondary"
+            onClick={handleCancel}
+            disabled={isSubmitting}
+          >
+            Cancelar
+          </Button>
+          <Button
+            type="submit"
+            className="admin-button-primary"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {isEditing ? "Atualizando..." : "Criando..."}
+              </>
+            ) : (
+              <>{isEditing ? "Atualizar Evento" : "Criar Evento"}</>
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
