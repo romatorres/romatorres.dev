@@ -3,17 +3,17 @@ import { devtools } from "zustand/middleware";
 
 interface Project {
   id: string;
-  titulo: string;
-  data: Date;
-  local: string;
-  horario: string;
-  detalhes?: string;
-  ativo?: boolean;
+  title: string;
+  description: string;
+  imageUrl: string;
+  link?: string;
+  order?: string;
+  isActive: boolean;
 }
 
 interface ProjectState {
-  project: Project[];
-  selectedProjects: Partial<Project> | null;
+  projects: Project[];
+  selectedProject: Partial<Project> | null; // singular
   loading: boolean;
   error: string | null;
   fetchProjects: () => Promise<void>;
@@ -25,26 +25,29 @@ interface ProjectState {
 
 export const useProjectStore = create<ProjectState>()(
   devtools((set, get) => ({
-    project: [],
+    // CORRIGIDO: projects (plural) + array vazio
+    projects: [],
     selectedProject: null,
     loading: false,
     error: null,
+
     fetchProjects: async () => {
-      if (get().project.length > 0) {
-        return; // Evita a busca se os dados já estiverem carregados
-      }
+      // Evita dupla busca
+      if (get().projects.length > 0) return;
+
       set({ loading: true, error: null });
       try {
         const response = await fetch("/api/project");
         if (!response.ok) {
-          throw new Error("Erro ao buscar um projeto.");
+          throw new Error("Erro ao buscar projetos.");
         }
         const data = await response.json();
-        set({ project: data, loading: false });
+        // Garante que sempre seja array
+        set({ projects: Array.isArray(data) ? data : [], loading: false });
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          set({ error: error.message, loading: false });
-        }
+        const message =
+          error instanceof Error ? error.message : "Erro desconhecido";
+        set({ error: message, loading: false });
       }
     },
 
@@ -53,72 +56,67 @@ export const useProjectStore = create<ProjectState>()(
       try {
         const response = await fetch("/api/project", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newProject),
         });
-        if (!response.ok) {
-          throw new Error("Erro ao criar um projeto.");
-        }
+        if (!response.ok) throw new Error("Erro ao criar projeto.");
         const data = await response.json();
+
         set((state) => ({
-          agendas: [...state.project, data],
+          // CORRIGIDO: projects, não agendas
+          projects: [...state.projects, data],
           loading: false,
         }));
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          set({ error: error.message, loading: false });
-        }
+        const message =
+          error instanceof Error ? error.message : "Erro ao criar";
+        set({ error: message, loading: false });
       }
     },
+
     updateProject: async (id, updatedProject) => {
       set({ loading: true, error: null });
       try {
         const response = await fetch(`/api/project/${id}`, {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedProject),
         });
-        if (!response.ok) {
-          throw new Error("Erro ao editar um projeto.");
-        }
+        if (!response.ok) throw new Error("Erro ao editar projeto.");
         const data = await response.json();
+
         set((state) => ({
-          projects: state.project.map((project) =>
-            project.id === id ? data : project
-          ),
+          projects: state.projects.map((p) => (p.id === id ? data : p)),
           loading: false,
         }));
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          set({ error: error.message, loading: false });
-        }
+        const message =
+          error instanceof Error ? error.message : "Erro ao editar";
+        set({ error: message, loading: false });
       }
     },
+
     deleteProject: async (id) => {
       set({ loading: true, error: null });
       try {
         const response = await fetch(`/api/project/${id}`, {
           method: "DELETE",
         });
-        if (!response.ok) {
-          throw new Error("Erro ao excluir um projeto.");
-        }
+        if (!response.ok) throw new Error("Erro ao excluir projeto.");
+
         set((state) => ({
-          projects: state.project.filter((project) => project.id !== id),
+          projects: state.projects.filter((p) => p.id !== id),
           loading: false,
         }));
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          set({ error: error.message, loading: false });
-        }
+        const message =
+          error instanceof Error ? error.message : "Erro ao excluir";
+        set({ error: message, loading: false });
       }
     },
+
     setSelectedProject: (project) => {
-      set({ selectedProjects: project });
+      set({ selectedProject: project });
     },
   }))
 );

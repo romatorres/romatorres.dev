@@ -1,30 +1,35 @@
 import Link from "next/link";
 import { SignupForm } from "./_components/signup-form";
+import { Card } from "@/components/ui/card";
 
 export default function Signup() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-white">Cadastro</h1>
-          <p className="mt-4 text-sm text-gray-300">
-            Crie sua conta para começar
-          </p>
-        </div>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="flex w-full flex-col items-center justify-center p-6">
+        <Card className="px-8 w-full sm:max-w-lg max-w-md mx-4">
+          <div className="w-full max-w-md space-y-8">
+            <div className="text-center">
+              <h1 className="text-3xl font-bold text-white">Cadastro</h1>
+              <p className="mt-4 text-sm text-gray-300">
+                Crie sua conta para começar
+              </p>
+            </div>
 
-        <SignupForm />
+            <SignupForm />
 
-        <div className="text-center text-sm text-gray-300">
-          <p>
-            Já tem uma conta?{" "}
-            <Link
-              href="/login"
-              className="font-medium text-primary hover:underline"
-            >
-              Faça login
-            </Link>
-          </p>
-        </div>
+            <div className="text-center text-sm text-gray-300">
+              <p>
+                Já tem uma conta?{" "}
+                <Link
+                  href="/login"
+                  className="font-medium text-primary hover:underline"
+                >
+                  Faça login
+                </Link>
+              </p>
+            </div>
+          </div>
+        </Card>
       </div>
     </div>
   );

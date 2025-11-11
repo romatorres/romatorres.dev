@@ -141,9 +141,9 @@ export function SignupForm() {
                     disabled={isLoading}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      <EyeOff className="h-4 w-4 text-gray-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
+                      <Eye className="h-4 w-4 text-gray-400" />
                     )}
                     <span className="sr-only">
                       {showPassword ? "Esconder senha" : "Mostrar senha"}
@@ -179,9 +179,9 @@ export function SignupForm() {
                     disabled={isLoading}
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      <EyeOff className="h-4 w-4 text-gray-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
+                      <Eye className="h-4 w-4 text-gray-400" />
                     )}
                     <span className="sr-only">
                       {showConfirmPassword ? "Esconder senha" : "Mostrar senha"}

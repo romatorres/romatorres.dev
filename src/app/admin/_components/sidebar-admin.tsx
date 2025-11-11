@@ -13,7 +13,7 @@ import {
   User,
   ChevronUp,
   ChevronDown,
-  LibraryBig,
+  FolderKanban,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +28,7 @@ import { ButtonSignOut } from "./button-signout";
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Usuários", href: "/admin/users", icon: Users },
-  { name: "Projetos", href: "/admin/projects", icon: LibraryBig },
+  { name: "Projetos", href: "/admin/projects", icon: FolderKanban },
   { name: "Configurações", href: "/admin/settings", icon: Settings },
 ];
 
