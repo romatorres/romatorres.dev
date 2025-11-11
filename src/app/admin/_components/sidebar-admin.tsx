@@ -47,7 +47,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden"
+          className="fixed inset-0 z-40 bg-background/80 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -55,18 +55,18 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
       {/* Mobile sidebar */}
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:hidden",
+          "fixed inset-y-0 left-0 z-50 w-64 bg-background shadow-lg transform transition-transform duration-300 ease-in-out lg:hidden",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between h-16 px-4 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">Admin Panel</h2>
+        <div className="flex items-center justify-between h-16 px-4 border-b border-neutral-900">
+          <h2 className="text-lg font-semibold text-gray-50">Admin Panel</h2>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setSidebarOpen(false)}
           >
-            <X className="h-5 w-5" />
+            <X className="h-6 w-6 text-gray-50" />
           </Button>
         </div>
         <SidebarContent pathname={pathname} user={user} />
@@ -74,9 +74,9 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
 
       {/* Desktop sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-        <div className="flex flex-col grow bg-white border-r border-gray-200">
-          <div className="flex items-center h-16 px-4 border-b">
-            <h2 className="text-lg font-semibold text-gray-900">Admin Panel</h2>
+        <div className="flex flex-col grow bg-background border-r border-neutral-900">
+          <div className="flex items-center h-16 px-4 border-b border-neutral-900">
+            <h2 className="text-lg font-semibold text-gray-50">Admin Painel</h2>
           </div>
           <SidebarContent pathname={pathname} user={user} />
         </div>
@@ -90,7 +90,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
           className="fixed top-4 left-4 z-40"
           onClick={() => setSidebarOpen(true)}
         >
-          <Menu className="h-5 w-5" />
+          <Menu className="h-6 w-6 text-gray-50" />
         </Button>
       </div>
     </>
@@ -101,28 +101,28 @@ function UserMenu({ user }: { user: { name: string; email: string } }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-t border-gray-200">
+    <div className="border-t border-neutral-800">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+            className="w-full flex items-center justify-between p-4 hover:bg-neutral-900 transition-colors cursor-pointer"
           >
             <div className="flex items-center space-x-3">
-              <div className="h-8 w-8 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <div className="h-8 w-8 bg-linear-to-br from-neutral-600 to-neutral-800 rounded-full flex items-center justify-center">
                 <User className="h-4 w-4 text-white" />
               </div>
               <div className="flex-1 min-w-0 text-left">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-medium text-gray-200 truncate">
                   {user.name}
                 </p>
-                <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                <p className="text-xs text-gray-300 truncate">{user.email}</p>
               </div>
             </div>
             {isOpen ? (
-              <ChevronUp className="h-4 w-4 text-gray-400" />
+              <ChevronUp className="h-4 w-4 text-gray-300" />
             ) : (
-              <ChevronDown className="h-4 w-4 text-gray-400" />
+              <ChevronDown className="h-4 w-4 text-gray-300" />
             )}
           </button>
         </DropdownMenuTrigger>
@@ -134,7 +134,7 @@ function UserMenu({ user }: { user: { name: string; email: string } }) {
         >
           <Link href="/admin/profile">
             <DropdownMenuItem>
-              <div className="flex items-center w-full cursor-pointer">
+              <div className="flex items-center w-full cursor-pointer py-2">
                 <button className="flex cursor-pointer">
                   <User className="h-4 w-4 mr-2" />
                   Meu Perfil
@@ -173,16 +173,16 @@ function SidebarContent({
               className={cn(
                 "group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors",
                 isActive
-                  ? "bg-gray-100 text-gray-900"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  ? "bg-neutral-800 text-gray-50"
+                  : "text-gray-400 hover:bg-neutral-600 hover:text-gray-50"
               )}
             >
               <item.icon
                 className={cn(
                   "mr-3 h-5 w-5 shrink-0",
                   isActive
-                    ? "text-gray-500"
-                    : "text-gray-400 group-hover:text-gray-500"
+                    ? "text-gray-50"
+                    : "text-gray-400 group-hover:text-gray-50"
                 )}
               />
               {item.name}

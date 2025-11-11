@@ -13,6 +13,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { useProjectStore } from "@/stores/projectsStores";
+import { Card } from "@/components/ui/card";
 
 const reports = [
   {
@@ -65,13 +66,11 @@ export default function ProjectsPage() {
   }, [fetchProjects]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mt-16">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Relatórios</h1>
-          <p className="text-gray-600">
-            Visualize e baixe relatórios do sistema
-          </p>
+          <h1 className="text-2xl font-bold text-gray-50">Projetos</h1>
+          <p className="text-gray-300">Gerencie seus projetos!</p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
@@ -80,43 +79,39 @@ export default function ProjectsPage() {
       </div>
 
       {/* Loading State */}
-
       {loading && (
-        <div>
+        <div className="">
           <Loader2 className="h-8 w-8 animate-spin text-primary mr-3" />
           <p>Carregando projetos...</p>
         </div>
       )}
 
       {/* Projects grid */}
-      <div className="flex gap-6">
+      <div className="flex flex-col gap-6">
         {reports.map((report) => (
-          <div
-            key={report.id}
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-200"
-          >
+          <Card key={report.id} className="p-4">
             <div className="flex items-start justify-between">
               <div className="flex items-center space-x-3">
                 <div className="h-10 w-10 bg-blue-50 rounded-lg flex items-center justify-center">
                   <report.icon className="h-5 w-5 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-gray-50">
                     {report.name}
                   </h3>
-                  <p className="text-sm text-gray-600">{report.description}</p>
+                  <p className="text-sm text-gray-300">{report.description}</p>
                 </div>
               </div>
             </div>
             <div className="mt-4 flex items-center justify-between">
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-300">
                 <span className="font-medium">{report.type}</span> • Último:{" "}
                 {report.lastGenerated}
               </div>
               <div className="flex space-x-2">
                 <Button variant="ghost" size="sm">
-                  <FilePenLine className="h-4 w-4 mr-1" />
-                  Editar
+                  <FilePenLine className="h-4 w-4 mr-1 text-gray-50" />
+                  <span className="text-gray-50">Editar</span>
                 </Button>
                 <Button variant="ghost" size="sm" className="text-destructive">
                   <Trash2 className="h-4 w-4 mr-1" />
@@ -124,7 +119,7 @@ export default function ProjectsPage() {
                 </Button>
               </div>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>

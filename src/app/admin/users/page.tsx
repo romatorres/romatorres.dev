@@ -92,13 +92,15 @@ export default function UsersPage() {
         </div>
       }
     >
-      <div className="space-y-6 sm:p-4 p-1">
+      <div className="space-y-6 mt-16">
         {/* Header */}
         <div>
           <div className="flex md:flex-row flex-col justify-between md:items-center items-start">
             <div>
-              <h1 className="text-3xl font-bold mb-2">Usuários</h1>
-              <p className="text-lg mb-4">Gerencie os usuários do sistema</p>
+              <h1 className="text-3xl font-bold mb-2 text-gray-50">Usuários</h1>
+              <p className="text-lg mb-4 text-gray-300">
+                Gerencie os usuários do sistema
+              </p>
             </div>
             <Button
               className="sm:w-auto w-full"
@@ -114,22 +116,20 @@ export default function UsersPage() {
           {isLoading ? (
             <div className="flex items-center justify-center">
               <Loader2 className="h-8 w-8 animate-spin text-primary mr-3" />
-              <span className="text-muted-foreground">
-                Carregando usuários...
-              </span>
+              <span className="text-gray-300">Carregando usuários...</span>
             </div>
           ) : (
-            <div className="w-full text-left flex flex-col gap-4">
+            <div className="w-full text-left flex flex-col">
               {users.map((user) => (
-                <Card key={user.id}>
+                <Card key={user.id} className="p-4">
                   <div className="flex flex-col gap-2">
                     <p className="flex gap-2 justify-start">
-                      <User />
-                      <span className="text-xl">{user.name}</span>
+                      <User className="text-gray-50" />
+                      <span className="text-xl text-gray-50">{user.name}</span>
                     </p>
                     <p className="flex gap-2 items-center antialiased leading-normal">
-                      <Mail className="w-4 h-4" />
-                      <span className="text-sm text-muted-foreground">
+                      <Mail className="w-4 h-4 text-gray-300" />
+                      <span className="text-sm text-gray-300">
                         {user.email}
                       </span>
                     </p>
@@ -146,21 +146,23 @@ export default function UsersPage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-5 justify-end mt-4">
-                    <button
-                      className="flex text-sm text-foreground hover:text-foreground/70 antialiased font-normal leading-normal cursor-pointer"
+                  <div className="flex gap-4 justify-end">
+                    <Button
+                      variant="ghost"
+                      className="text-gray-50"
                       onClick={() => handleOpenDialog(user)}
                     >
                       <Edit className="h-4 w-4 mr-1" />
                       Editar
-                    </button>
-                    <button
-                      className="flex text-sm text-destructive hover:text-destructive/70 antialiased font-normal leading-normal cursor-pointer"
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="text-destructive"
                       onClick={() => setDeleteId(user.id)}
                     >
                       <Trash2 className="h-4 w-4 mr-1" />
                       Excluir
-                    </button>
+                    </Button>
                   </div>
                 </Card>
               ))}
