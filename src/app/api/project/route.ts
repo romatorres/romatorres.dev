@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { title, description, imageUrl, link, order, isActive = true } = body;
 
-    if (!title || !description || !imageUrl || !link) {
+    if (!title || !description || !imageUrl) {
       return NextResponse.json(
         { message: "Todos os campos obrigatórios devem ser preenchidos." },
         { status: 400 }
@@ -26,9 +26,7 @@ export async function POST(request: Request) {
   } catch (error: unknown) {
     console.error("Error creating project:", error);
     const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "Erro ao criar um projeto.";
+      error instanceof Error ? error.message : "Erro ao criar um projeto.";
     return NextResponse.json(
       { message: errorMessage },
       { status: errorMessage.includes("permissão") ? 403 : 500 }

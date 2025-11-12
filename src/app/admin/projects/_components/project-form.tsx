@@ -161,6 +161,29 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
 
         <FormField
           control={form.control}
+          name="link"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="flex items-center font-medium">
+                <Type className="h-4 w-4" />
+                Link do Projeto
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="https//bandaflashback.com.br..."
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="text-xs">
+                {field.value?.length || 0}/100 caracteres
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="description"
           render={({ field }) => (
             <FormItem>
