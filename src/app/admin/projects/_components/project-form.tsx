@@ -36,7 +36,7 @@ const formSchema = z.object({
   isActive: z.boolean(),
 });
 
-type FormValues = z.infer<typeof formSchema> & { ativo: boolean };
+type FormValues = z.infer<typeof formSchema> & { isActive: boolean };
 
 interface AgendaFormProps {
   onSuccess?: () => void;
@@ -169,7 +169,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
 
         <FormField
           control={form.control}
-          name="detalhes"
+          name="description"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center text-foreground font-medium">
@@ -194,14 +194,11 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
         {isEditing && (
           <FormField
             control={form.control}
-            name="ativo"
+            name="isActive"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
-                  <FormLabel className="text-base">Ativar Evento</FormLabel>
-                  <FormDescription>
-                    Define se o evento estará visível na página principal.
-                  </FormDescription>
+                  <FormLabel className="text-base">Ativar Projeto</FormLabel>
                 </div>
                 <FormControl>
                   <Switch
@@ -235,7 +232,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
                 {isEditing ? "Atualizando..." : "Criando..."}
               </>
             ) : (
-              <>{isEditing ? "Atualizar Evento" : "Criar Evento"}</>
+              <>{isEditing ? "Atualizar Projeto" : "Criar Projeto"}</>
             )}
           </Button>
         </div>

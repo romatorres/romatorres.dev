@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Plus, Trash2, FilePenLine, Loader2, FolderKanban } from "lucide-react";
 import { useProjectStore } from "@/stores/projectsStores";
 import { Card } from "@/components/ui/card";
+import { Dialog } from "@radix-ui/react-dialog";
+import {
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ProjectForm } from "./_components/project-form";
 
 export default function ProjectsPage() {
   const {
@@ -17,9 +24,16 @@ export default function ProjectsPage() {
     fetchProjects,
   } = useProjectStore();
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   useEffect(() => {
     fetchProjects();
   }, [fetchProjects]);
+
+  const handleOpenDialog = (agenda?: (typeof projects)[0]) => {
+    setSelectedProject(agenda || {});
+    setIsDialogOpen(true);
+  };
 
   return (
     <div className="space-y-6 mt-16">
@@ -28,7 +42,7 @@ export default function ProjectsPage() {
           <h1 className="text-2xl font-bold text-gray-50">Projetos</h1>
           <p className="text-gray-300">Gerencie seus projetos!</p>
         </div>
-        <Button>
+        <Button onClick={() => handleOpenDialog()}>
           <Plus className="h-4 w-4 mr-2" />
           Projeto
         </Button>
@@ -112,6 +126,18 @@ export default function ProjectsPage() {
             )}
           </>
         )}
+
+        {/* Dialog for Create/Edit */}
+        <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="admin-title text-xl">
+                {selectedProject.id ? "Editar Evento" : "Novo Evento"}
+              </DialogTitle>
+            </DialogHeader>
+            <ProjectFormForm onSuccess={handleCloseDialog} />
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
