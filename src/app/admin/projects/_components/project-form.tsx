@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Loader2, FileText, Type, FileImage } from "lucide-react";
+import { upload } from "@vercel/blob/client";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,7 +29,7 @@ const formSchema = z.object({
     .min(1, { message: "O título é obrigatório." })
     .min(3, { message: "O título deve ter pelo menos 3 caracteres." })
     .max(100, { message: "O título deve ter no máximo 100 caracteres." }),
-  imageUrl: z.string(),
+  imageUrl: z.string().min(1, { message: "A imagem do projeto é obrigatória." }),
   link: z.string().optional(),
   description: z
     .string()
@@ -45,6 +46,8 @@ interface AgendaFormProps {
 export function ProjectForm({ onSuccess }: AgendaFormProps) {
   const { createProject, updateProject, selectedProject, setSelectedProject } =
     useProjectStore();
+  const [imageSource, setImageSource] = useState<"url" | "file">("url");
+  const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -64,6 +67,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
 
   const isEditing = !!selectedProject?.id;
   const watchedDetalhes = watch("description");
+  const watchedImageUrl = watch("imageUrl");
 
   useEffect(() => {
     if (isEditing && selectedProject?.id) {
@@ -74,6 +78,9 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
         link: selectedProject.link || "",
         isActive: selectedProject.isActive ?? true,
       });
+      if (selectedProject.imageUrl) {
+        setImageSource("url");
+      }
     } else {
       form.reset({
         title: "",
@@ -82,8 +89,54 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
         link: "",
         isActive: true,
       });
+      setImageSource("url");
     }
   }, [selectedProject, form, isEditing]);
+
+  const handleImageUpload = async (file: File) => {
+    if (!file) return;
+    setIsUploading(true);
+
+    const uploadStrategy = process.env.NEXT_PUBLIC_UPLOAD_STRATEGY;
+
+    try {
+      let imageUrl: string;
+
+      if (uploadStrategy === "local") {
+        // Local upload logic
+        const formData = new FormData();
+        formData.append("file", file);
+        const response = await fetch("/api/upload-local", {
+          method: "POST",
+          body: formData,
+        });
+        const result = await response.json();
+        if (!result.success) {
+          throw new Error(result.message || "Erro no upload local.");
+        }
+        imageUrl = result.url;
+      } else {
+        // Vercel Blob logic (default)
+        const newBlob = await upload(file.name, file, {
+          access: "public",
+          handleUploadUrl: "/api/upload",
+        });
+        imageUrl = newBlob.url;
+      }
+
+      form.setValue("imageUrl", imageUrl, { shouldValidate: true });
+      toast.success("Imagem enviada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao enviar imagem:", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Ocorreu um erro ao enviar a imagem."
+      );
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const onSubmit = async (values: FormValues) => {
     try {
@@ -145,14 +198,64 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center font-medium">
-                <FileImage className="h-4 w-4" />
+                <FileImage className="h-4 w-4 mr-2" />
                 Imagem do projeto
               </FormLabel>
-              <FormControl>
-                <Input placeholder=".../img/bandaflashback.jpg" {...field} />
-              </FormControl>
+              <div className="flex gap-2 mb-2">
+                <Button
+                  type="button"
+                  variant={imageSource === "url" ? "secondary" : "ghost"}
+                  onClick={() => setImageSource("url")}
+                >
+                  URL
+                </Button>
+                <Button
+                  type="button"
+                  variant={imageSource === "file" ? "secondary" : "ghost"}
+                  onClick={() => setImageSource("file")}
+                >
+                  Upload
+                </Button>
+              </div>
+              {imageSource === "url" ? (
+                <FormControl>
+                  <Input
+                    placeholder="https://example.com/image.jpg"
+                    {...field}
+                  />
+                </FormControl>
+              ) : (
+                <FormControl>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) {
+                          handleImageUpload(e.target.files[0]);
+                        }
+                      }}
+                      disabled={isUploading}
+                    />
+                    {isUploading && <Loader2 className="h-4 w-4 animate-spin" />}
+                  </div>
+                </FormControl>
+              )}
+
+              {watchedImageUrl && (
+                <div className="mt-4 relative w-full h-48 rounded-md overflow-hidden border">
+                  <img
+                    src={watchedImageUrl}
+                    alt="Pré-visualização da imagem"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              )}
+
               <FormDescription className="text-xs">
-                {field.value?.length || "Escolha uma imagem"}
+                {imageSource === "file"
+                  ? "Faça o upload de uma imagem."
+                  : "Insira a URL de uma imagem."}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -170,7 +273,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="https//bandaflashback.com.br..."
+                  placeholder="https://bandaflashback.com.br..."
                   {...field}
                 />
               </FormControl>
@@ -235,7 +338,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
           >
             Cancelar
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting || isUploading}>
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

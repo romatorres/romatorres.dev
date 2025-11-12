@@ -92,8 +92,16 @@ export default function ProjectsPage() {
                   <Card key={project.id} className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center space-x-3">
-                        <div className="h-10 w-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                          {project.imageUrl}
+                        <div className="h-10 w-10 bg-blue-50 rounded-lg flex items-center justify-center overflow-hidden">
+                          {project.imageUrl ? (
+                            <img
+                              src={project.imageUrl}
+                              alt={project.title}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <FolderKanban className="h-6 w-6 text-gray-400" />
+                          )}
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold text-gray-50">
