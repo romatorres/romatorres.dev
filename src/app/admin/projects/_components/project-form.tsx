@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2, MapPin, FileText, Type } from "lucide-react";
+import { Loader2, FileText, Type, FileImage } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -124,18 +124,14 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="flex items-center text-foreground font-medium">
-                <Type className="h-4 w-4 mr-2 text-disco-purple" />
+              <FormLabel className="flex items-center font-medium">
+                <Type className="h-4 w-4" />
                 Título do Projeto
               </FormLabel>
               <FormControl>
-                <Input
-                  className="admin-input"
-                  placeholder="Ex: Reunião de equipe, Workshop, Apresentação..."
-                  {...field}
-                />
+                <Input placeholder="Site Banda Flashback..." {...field} />
               </FormControl>
-              <FormDescription className="text-xs text-muted-foreground">
+              <FormDescription className="text-xs">
                 {field.value?.length || 0}/100 caracteres
               </FormDescription>
               <FormMessage />
@@ -148,19 +144,15 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
           name="imageUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="flex items-center text-foreground font-medium">
-                <MapPin className="h-4 w-4 mr-2 text-disco-blue" />
+              <FormLabel className="flex items-center font-medium">
+                <FileImage className="h-4 w-4" />
                 Imagem do projeto
               </FormLabel>
               <FormControl>
-                <Input
-                  className="admin-input"
-                  placeholder="Ex: Sala de reuniões, Auditório, Online..."
-                  {...field}
-                />
+                <Input placeholder=".../img/bandaflashback.jpg" {...field} />
               </FormControl>
-              <FormDescription className="text-xs text-muted-foreground">
-                {field.value?.length || 0}/200 caracteres
+              <FormDescription className="text-xs">
+                {field.value?.length || "Escolha uma imagem"}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -172,18 +164,18 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="flex items-center text-foreground font-medium">
-                <FileText className="h-4 w-4 mr-2 text-disco-green" />
-                Detalhes (Opcional)
+              <FormLabel className="flex items-center font-medium">
+                <FileText className="h-4 w-4" />
+                Descrição
               </FormLabel>
               <FormControl>
                 <Textarea
-                  className="admin-textarea min-h-[100px]"
-                  placeholder="Adicione informações extras sobre o evento, agenda, participantes, materiais necessários..."
+                  className="min-h-[100px]"
+                  placeholder="Adicione informações extras sobre o projeto..."
                   {...field}
                 />
               </FormControl>
-              <FormDescription className="text-xs text-muted-foreground">
+              <FormDescription className="text-xs">
                 {watchedDetalhes?.length || 0}/500 caracteres
               </FormDescription>
               <FormMessage />
@@ -211,21 +203,16 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
           />
         )}
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-border">
+        <div className="flex justify-end gap-3 pt-4 ">
           <Button
             type="button"
             variant="secondary"
-            className="admin-button-secondary"
             onClick={handleCancel}
             disabled={isSubmitting}
           >
             Cancelar
           </Button>
-          <Button
-            type="submit"
-            className="admin-button-primary"
-            disabled={isSubmitting}
-          >
+          <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

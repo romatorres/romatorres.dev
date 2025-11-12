@@ -30,9 +30,14 @@ export default function ProjectsPage() {
     fetchProjects();
   }, [fetchProjects]);
 
-  const handleOpenDialog = (agenda?: (typeof projects)[0]) => {
-    setSelectedProject(agenda || {});
+  const handleOpenDialog = (project?: (typeof projects)[0]) => {
+    setSelectedProject(project || {});
     setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedProject(null);
   };
 
   return (
@@ -132,10 +137,10 @@ export default function ProjectsPage() {
           <DialogContent className="max-w-md">
             <DialogHeader>
               <DialogTitle className="admin-title text-xl">
-                {selectedProject.id ? "Editar Evento" : "Novo Evento"}
+                {selectedProject?.id ? "Editar Projeto" : "Novo Projeto"}
               </DialogTitle>
             </DialogHeader>
-            <ProjectFormForm onSuccess={handleCloseDialog} />
+            <ProjectForm onSuccess={handleCloseDialog} />
           </DialogContent>
         </Dialog>
       </div>
