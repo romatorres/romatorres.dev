@@ -22,6 +22,7 @@ import {
 import { toast } from "sonner";
 import { useProjectStore } from "@/stores/projectsStores";
 import { Switch } from "@/components/ui/switch";
+import Image from "next/image";
 
 const formSchema = z.object({
   title: z
@@ -29,7 +30,9 @@ const formSchema = z.object({
     .min(1, { message: "O título é obrigatório." })
     .min(3, { message: "O título deve ter pelo menos 3 caracteres." })
     .max(100, { message: "O título deve ter no máximo 100 caracteres." }),
-  imageUrl: z.string().min(1, { message: "A imagem do projeto é obrigatória." }),
+  imageUrl: z
+    .string()
+    .min(1, { message: "A imagem do projeto é obrigatória." }),
   link: z.string().optional(),
   description: z
     .string()
@@ -237,17 +240,20 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
                       }}
                       disabled={isUploading}
                     />
-                    {isUploading && <Loader2 className="h-4 w-4 animate-spin" />}
+                    {isUploading && (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    )}
                   </div>
                 </FormControl>
               )}
 
               {watchedImageUrl && (
-                <div className="mt-4 relative w-full h-48 rounded-md overflow-hidden border">
-                  <img
+                <div className="mt-4 relative w-48 h-48 rounded-md overflow-hidden border">
+                  <Image
                     src={watchedImageUrl}
                     alt="Pré-visualização da imagem"
                     className="w-full h-full object-contain"
+                    fill
                   />
                 </div>
               )}

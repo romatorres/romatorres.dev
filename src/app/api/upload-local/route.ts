@@ -3,7 +3,7 @@ import { writeFile } from "fs/promises";
 import { join } from "path";
 import { mkdirSync, existsSync } from "fs";
 
-// Helper to ensure directory exists
+// Auxiliar para garantir que o diretório exista.
 const ensureDirExists = (dirPath: string) => {
   if (!existsSync(dirPath)) {
     mkdirSync(dirPath, { recursive: true });
@@ -15,30 +15,36 @@ export async function POST(request: NextRequest) {
   const file: File | null = data.get("file") as unknown as File;
 
   if (!file) {
-    return NextResponse.json({ success: false, message: "No file uploaded." }, { status: 400 });
+    return NextResponse.json(
+      { success: false, message: "Nenhum arquivo foi enviado." },
+      { status: 400 }
+    );
   }
 
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  // Create a unique filename to avoid overwriting
+  // Crie um nome de arquivo exclusivo para evitar sobrescrita.
   const filename = `${Date.now()}-${file.name.replace(/\s/g, "_")}`;
-  
-  // Define the upload path
+
+  // Defina o caminho de upload
   const uploadDir = join(process.cwd(), "public", "uploads", "projects");
   const path = join(uploadDir, filename);
 
-  // Ensure the upload directory exists
+  // Certifique-se de que o diretório de upload exista.
   ensureDirExists(uploadDir);
 
   try {
     await writeFile(path, buffer);
-    console.log(`File uploaded to ${path}`);
+    console.log(`Arquivo enviado para ${path}`);
 
     const imageUrl = `/uploads/projects/${filename}`;
     return NextResponse.json({ success: true, url: imageUrl });
   } catch (error) {
-    console.error("Error uploading file:", error);
-    return NextResponse.json({ success: false, message: "Error uploading file." }, { status: 500 });
+    console.error("Erro ao enviar o arquivo:", error);
+    return NextResponse.json(
+      { success: false, message: "Erro ao enviar o arquivo." },
+      { status: 500 }
+    );
   }
 }

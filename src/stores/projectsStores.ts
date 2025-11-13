@@ -1,15 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  link?: string;
-  order?: string;
-  isActive: boolean;
-}
+import { Project } from "@/types/projects";
 
 interface ProjectState {
   projects: Project[];

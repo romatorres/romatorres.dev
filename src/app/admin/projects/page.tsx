@@ -7,11 +7,17 @@ import { useProjectStore } from "@/stores/projectsStores";
 import { Card } from "@/components/ui/card";
 import { Dialog } from "@radix-ui/react-dialog";
 import {
+  DialogClose,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import { ProjectForm } from "./_components/project-form";
+import Image from "next/image";
+import { Project } from "@/types/projects";
 
 export default function ProjectsPage() {
   const {
@@ -25,6 +31,8 @@ export default function ProjectsPage() {
   } = useProjectStore();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
   useEffect(() => {
     fetchProjects();
@@ -38,6 +46,28 @@ export default function ProjectsPage() {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedProject(null);
+  };
+
+  const handleOpenDeleteDialog = (project: Project) => {
+    setProjectToDelete(project);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setProjectToDelete(null);
+    setIsDeleteDialogOpen(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (projectToDelete) {
+      const promise = deleteProject(projectToDelete.id);
+      toast.promise(promise, {
+        loading: "Excluindo projeto...",
+        success: "Projeto excluído com sucesso!",
+        error: "Erro ao excluir projeto.",
+      });
+      handleCloseDeleteDialog();
+    }
   };
 
   return (
@@ -92,12 +122,13 @@ export default function ProjectsPage() {
                   <Card key={project.id} className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center space-x-3">
-                        <div className="h-10 w-10 bg-blue-50 rounded-lg flex items-center justify-center overflow-hidden">
+                        <div className="relative h-20 w-20 bg-blue-50  flex items-center justify-center overflow-hidden">
                           {project.imageUrl ? (
-                            <img
+                            <Image
                               src={project.imageUrl}
                               alt={project.title}
                               className="h-full w-full object-cover"
+                              fill
                             />
                           ) : (
                             <FolderKanban className="h-6 w-6 text-gray-400" />
@@ -119,7 +150,11 @@ export default function ProjectsPage() {
                         <span>{project.isActive}</span>
                       </div>
                       <div className="flex space-x-2">
-                        <Button variant="ghost" size="sm">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleOpenDialog(project)}
+                        >
                           <FilePenLine className="h-4 w-4 mr-1 text-gray-50" />
                           <span className="text-gray-50">Editar</span>
                         </Button>
@@ -127,6 +162,7 @@ export default function ProjectsPage() {
                           variant="ghost"
                           size="sm"
                           className="text-destructive"
+                          onClick={() => handleOpenDeleteDialog(project)}
                         >
                           <Trash2 className="h-4 w-4 mr-1" />
                           Excluir
@@ -149,6 +185,35 @@ export default function ProjectsPage() {
               </DialogTitle>
             </DialogHeader>
             <ProjectForm onSuccess={handleCloseDialog} />
+          </DialogContent>
+        </Dialog>
+
+        {/* Dialog for Delete */}
+        <Dialog
+          open={isDeleteDialogOpen}
+          onOpenChange={handleCloseDeleteDialog}
+        >
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Confirmar Exclusão</DialogTitle>
+              <DialogDescription>
+                Você tem certeza que deseja excluir o projeto
+                <strong>{projectToDelete?.title}</strong>? Esta ação não pode
+                ser desfeita.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="mt-4">
+              <DialogClose asChild>
+                <Button variant="secondary">Cancelar</Button>
+              </DialogClose>
+              <Button
+                variant="destructive"
+                onClick={handleDeleteConfirm}
+                className="px-7"
+              >
+                Excluir
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>

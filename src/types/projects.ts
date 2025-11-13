@@ -3,7 +3,7 @@ export type Project = {
   title: string;
   description: string;
   imageUrl: string | null;
-  link: string | null;
-  order: number;
+  link?: string | null;
+  order?: string | null;
   isActive: boolean;
 };
