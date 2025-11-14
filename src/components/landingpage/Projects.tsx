@@ -1,25 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
-import { Project } from "@/types/projects";
 import Link from "next/link";
+import { useProjectStore } from "@/stores/projectsStores";
 
 export default function Projects() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const { fetchProjects, projects } = useProjectStore();
 
   useEffect(() => {
-    async function fetchProjects() {
-      const response = await fetch("/api/projects");
-      const data = await response.json();
-      setProjects(data.projects || []);
-    }
-
     fetchProjects();
-  }, []);
+  }, [fetchProjects]);
 
   return (
-    <section id="services">
+    <section id="projects">
       <div className="container mx-auto px-4 md:px-12 py-12 lg:py-16">
         <div>
           <h2 className="font-primary text-secondary text-4xl md:text-5xl lg:text-7xl font-bold mb-3 text-center">
