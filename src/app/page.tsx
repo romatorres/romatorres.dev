@@ -3,7 +3,7 @@ import Contacts from "@/components/landingpage/Contacts";
 import Footer from "@/components/landingpage/Footer";
 import Header from "@/components/landingpage/Header";
 import Hero from "@/components/landingpage/Hero";
-import Projects from "@/components/landingpage/Projects";
+import Projects from "@/components/landingpage/Projects/Projects";
 import Services from "@/components/landingpage/Services";
 
 export default function Home() {
