@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { scrollToSection } from "@/components/landingpage/_components/scroll";
 
@@ -46,16 +45,15 @@ export default function Hero() {
       id="hero"
       className="min-h-screen flex flex-col items-center justify-center bg-hero bg-center bg-cover bg-no-repeat"
     >
-      <div className="container mx-auto flex flex-col lg:flex-row justify-between items-center px-4">
-        {/* Bloco "ROLAR SCROLL" na vertical - moved outside container */}
-        <div className="hidden lg:flex flex-col items-start mb-8 lg:mb-0 order-3 lg:order-1">
-          <p className="writing-mode-vertical-lr rotate--180 text-xs font-secondary text-secondary animate-tremor cursor-pointer">
-            <a href="#about" onClick={(e) => scrollToSection(e, "about")}>
-              ROLAR SCROLL &#x2192;
-            </a>
-          </p>
-        </div>
-
+      {/* Bloco "ROLAR SCROLL" na vertical - moved outside container */}
+      <div className="hidden lg:flex flex-col items-start mb-8 lg:mb-0 order-3 lg:order-1 fixed left-4 top-1/2 -translate-y-1/2 z-50">
+        <p className="writing-mode-vertical-lr rotate--180 text-xs font-secondary text-secondary animate-tremor cursor-pointer">
+          <a href="#about" onClick={(e) => scrollToSection(e, "about")}>
+            ROLAR SCROLL &#x2192;
+          </a>
+        </p>
+      </div>
+      <div className="container mx-auto flex flex-col lg:flex-row justify-center items-center px-4">
         {/* Texto central */}
         <div className="text-center text-secondary mt-20 lg:mt-0 mb-8 lg:mb-0 order-1 lg:order-2">
           <h3 className="text-sm font-medium font-primary mb-4 tracking-widest text-oswa">
@@ -70,52 +68,13 @@ export default function Hero() {
             e sou especialista em linguagens de programação modernas e atuais.
           </p>
         </div>
-
-        {/* Ícones na vertical */}
-        <div className="flex flex-row lg:flex-col items-center gap-4 px-10 order-2 lg:order-3">
-          <Image
-            src="/img/git.svg"
-            alt="Icone Github"
-            height={32}
-            width={32}
-            className="hover:scale-110 transition-transform duration-200 cursor-pointer"
-          />
-          <Image
-            src="/img/insta.svg"
-            alt="Icone Instagram"
-            height={32}
-            width={32}
-            className="hover:scale-110 transition-transform duration-200 cursor-pointer"
-          />
-          <Image
-            src="/img/x.svg"
-            alt="Icone X"
-            height={32}
-            width={32}
-            className="hover:scale-110 transition-transform duration-200 cursor-pointer"
-          />
-          <Image
-            src="/img/be.svg"
-            alt="Icone Be"
-            height={32}
-            width={32}
-            className="hover:scale-110 transition-transform duration-200 cursor-pointer"
-          />
-          <Image
-            src="/img/pinterest.svg"
-            alt="Icone Pinterest"
-            height={32}
-            width={32}
-            className="hover:scale-110 transition-transform duration-200 cursor-pointer"
-          />
-        </div>
       </div>
-      <div className="flex flex-col items-center gap-4 mt-20">
-        <div className="flex gap-4">
+      <div className="flex flex-col items-center gap-4 mt-20 w-full">
+        <div className="flex flex-col sm:flex-row gap-4 w-full items-center justify-center">
           <Button
             variant="default"
             onClick={handleHireClick}
-            className="px-16 rounded-xs"
+            className="px-16 rounded-xs w-full"
           >
             CONTRATAR
           </Button>
@@ -123,14 +82,14 @@ export default function Hero() {
           <Button
             variant="outline"
             onClick={(e) => scrollToSection(e, "projects")}
-            className="border-white rounded-xs px-14 text-white bg-background hover:bg-black-foreground"
+            className="border-white rounded-xs px-14 text-white bg-background hover:bg-black-foreground w-"
           >
             MEUS TRABALHOS
           </Button>
         </div>
         {/* Mobile version of Rolar Scroll */}
         <div className="flex lg:hidden mt-16 mb-14">
-          <p className="writing-mode-vertical-lr rotate-180 text-xs font-secondary text-secondary animate-tremor cursor-pointer">
+          <p className="writing-mode-vertical-lr rotate--90 text-xs font-secondary text-secondary animate-tremor cursor-pointer">
             <a href="#about" onClick={(e) => scrollToSection(e, "about")}>
               ROLAR SCROLL &#x2192;
             </a>
