@@ -9,6 +9,7 @@ export default function Hero() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(150);
+  const [showScrollHint, setShowScrollHint] = useState(true);
 
   useEffect(() => {
     const words = ["CRIATIVIDADE", "INOVAÇÃO", "DESIGN", "TECNOLOGIA"];
@@ -40,13 +41,29 @@ export default function Hero() {
     window.open("https://wa.me/75991340520", "_blank");
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollThreshold = window.innerHeight * 0.3; // 30% da altura da janela
+      setShowScrollHint(window.scrollY < scrollThreshold);
+    };
+    // Checa no carregamento inicial
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
+
   return (
     <section
       id="hero"
       className="min-h-screen flex flex-col items-center justify-center bg-hero bg-center bg-cover bg-no-repeat"
     >
-      {/* Bloco "ROLAR SCROLL" na vertical - moved outside container */}
-      <div className="hidden lg:flex flex-col items-start mb-8 lg:mb-0 order-3 lg:order-1 fixed left-4 top-1/2 -translate-y-1/2 z-50">
+      {/* Versão Desktop - "ROLAR SCROLL" vertical */}
+      <div
+        className={`hidden lg:flex flex-col items-start mb-8 lg:mb-0 order-3 lg:order-1 fixed left-4 top-1/2 -translate-y-1/2 z-50 transition-opacity duration-500 ${
+          showScrollHint ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
         <p className="writing-mode-vertical-lr rotate--180 text-xs font-secondary text-secondary animate-tremor cursor-pointer">
           <a href="#about" onClick={(e) => scrollToSection(e, "about")}>
             ROLAR SCROLL &#x2192;
@@ -70,11 +87,11 @@ export default function Hero() {
         </div>
       </div>
       <div className="flex flex-col items-center gap-4 mt-20 w-full">
-        <div className="flex flex-col sm:flex-row gap-4 w-full items-center justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 w-full items-center justify-center sm:mx-0 px-4">
           <Button
             variant="default"
             onClick={handleHireClick}
-            className="px-16 rounded-xs w-full"
+            className="px-16 rounded-xs sm:w-auto w-full"
           >
             CONTRATAR
           </Button>
@@ -82,13 +99,17 @@ export default function Hero() {
           <Button
             variant="outline"
             onClick={(e) => scrollToSection(e, "projects")}
-            className="border-white rounded-xs px-14 text-white bg-background hover:bg-black-foreground w-"
+            className="border-white rounded-xs px-14 text-white bg-background hover:bg-black-foreground sm:w-auto w-full"
           >
             MEUS TRABALHOS
           </Button>
         </div>
-        {/* Mobile version of Rolar Scroll */}
-        <div className="flex lg:hidden mt-16 mb-14">
+        {/* Versão Mabile - "ROLAR SCROLL" vertical */}
+        <div
+          className={`flex lg:hidden mt-16 mb-14 transition-opacity duration-500 ${
+            showScrollHint ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
           <p className="writing-mode-vertical-lr rotate--90 text-xs font-secondary text-secondary animate-tremor cursor-pointer">
             <a href="#about" onClick={(e) => scrollToSection(e, "about")}>
               ROLAR SCROLL &#x2192;

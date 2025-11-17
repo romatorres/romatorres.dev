@@ -1,24 +1,41 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Service } from "@/types/services";
 import { scrollToSection } from "@/components/landingpage/_components/scroll";
 
+const services = [
+  {
+    id: 1,
+    title: "DESENVOLVIMENTO WEB",
+    description:
+      "Criação de sites modernos, responsivos e otimizados, com foco em performance, segurança e design atraente para qualquer dispositivo.",
+    imageUrl: "/img/icon-web.png",
+  },
+  {
+    id: 2,
+    title: "APP MOBILE E DESKTOP",
+    description:
+      "Desenvolvimento de aplicativos intuitivos e responsivos para mobile e desktop, garantindo performance e experiência do usuário excepcionais em todas as plataformas.",
+    imageUrl: "/img/icon-phone.png",
+  },
+  {
+    id: 3,
+    title: "UI UX DESIGN",
+    description:
+      "Design de interfaces centradas no usuário, combinando estética e funcionalidade para proporcionar experiências digitais memoráveis e eficientes.",
+    imageUrl: "/img/icon-design.png",
+  },
+  {
+    id: 4,
+    title: "PROTOTIPAÇÃO E WIREFRAMES",
+    description:
+      "Desenvolvimento de protó tipos e wireframes interativos para validar ideias e estruturar projetos de forma clara e eficaz antes da implementação.",
+    imageUrl: "/img/icon-tools.png",
+  },
+];
+
 export default function Services() {
-  const [services, setServices] = useState<Service[]>([]);
-
-  useEffect(() => {
-    async function fetchServices() {
-      const response = await fetch("/api/services");
-      const data = await response.json();
-      setServices(data.services || []);
-    }
-
-    fetchServices();
-  }, []);
-
   const handleHireClick = (e: React.MouseEvent) => {
     scrollToSection(e as React.MouseEvent<HTMLButtonElement>, "contacts");
     window.open("https://wa.me/75991340520", "_blank");
