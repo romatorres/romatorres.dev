@@ -1,28 +1,34 @@
 import { ReactNode } from "react";
-import { Project } from "@/types/projects";
 
-interface MasonryGridProps {
-  projects: Project[];
-  renderItem: (project: Project) => ReactNode;
+interface MasonryGridProps<T> {
+  items: T[];
+  renderItem: (item: T) => ReactNode;
+  getKey: (item: T, index: number) => string | number;
+  columnsConfig?: {
+    xl?: number;
+    lg?: number;
+    md?: number;
+  };
 }
 
-export function MasonryGrid({ projects, renderItem }: MasonryGridProps) {
-  // Distribui os projetos em colunas baseado no índice
-  const distributeProjects = (items: Project[], columns: number) => {
-    const cols: Project[][] = Array.from({ length: columns }, () => []);
-
+export function MasonryGrid<T>({
+  items,
+  renderItem,
+  getKey,
+  columnsConfig = { xl: 4, lg: 3, md: 2 },
+}: MasonryGridProps<T>) {
+  const distributeItems = (items: T[], columns: number) => {
+    const cols: T[][] = Array.from({ length: columns }, () => []);
     items.forEach((item, index) => {
       cols[index % columns].push(item);
     });
-
     return cols;
   };
 
-  // Colunas responsivas para diferentes tamanhos
   const columns = {
-    xl: distributeProjects(projects, 4),
-    lg: distributeProjects(projects, 3),
-    md: distributeProjects(projects, 2),
+    xl: distributeItems(items, columnsConfig.xl!),
+    lg: distributeItems(items, columnsConfig.lg!),
+    md: distributeItems(items, columnsConfig.md!),
   };
 
   return (
@@ -31,8 +37,8 @@ export function MasonryGrid({ projects, renderItem }: MasonryGridProps) {
       <div className="hidden xl:flex gap-4">
         {columns.xl.map((col, colIndex) => (
           <div key={`xl-${colIndex}`} className="flex-1 flex flex-col gap-4">
-            {col.map((project) => (
-              <div key={project.id}>{renderItem(project)}</div>
+            {col.map((item, index) => (
+              <div key={getKey(item, index)}>{renderItem(item)}</div>
             ))}
           </div>
         ))}
@@ -42,8 +48,8 @@ export function MasonryGrid({ projects, renderItem }: MasonryGridProps) {
       <div className="hidden lg:flex xl:hidden gap-4">
         {columns.lg.map((col, colIndex) => (
           <div key={`lg-${colIndex}`} className="flex-1 flex flex-col gap-4">
-            {col.map((project) => (
-              <div key={project.id}>{renderItem(project)}</div>
+            {col.map((item, index) => (
+              <div key={getKey(item, index)}>{renderItem(item)}</div>
             ))}
           </div>
         ))}
@@ -53,8 +59,8 @@ export function MasonryGrid({ projects, renderItem }: MasonryGridProps) {
       <div className="hidden md:flex lg:hidden gap-4">
         {columns.md.map((col, colIndex) => (
           <div key={`md-${colIndex}`} className="flex-1 flex flex-col gap-4">
-            {col.map((project) => (
-              <div key={project.id}>{renderItem(project)}</div>
+            {col.map((item, index) => (
+              <div key={getKey(item, index)}>{renderItem(item)}</div>
             ))}
           </div>
         ))}
@@ -62,8 +68,8 @@ export function MasonryGrid({ projects, renderItem }: MasonryGridProps) {
 
       {/* Grid Masonry - Mobile (sm: 1 coluna) */}
       <div className="flex md:hidden flex-col gap-4">
-        {projects.map((project) => (
-          <div key={project.id}>{renderItem(project)}</div>
+        {items.map((item, index) => (
+          <div key={getKey(item, index)}>{renderItem(item)}</div>
         ))}
       </div>
     </>
