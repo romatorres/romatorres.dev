@@ -57,13 +57,13 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         )}
 
         {/* Área de texto com rolagem independente */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
-          <h3 className="text-2xl md:text-3xl font-bold text-white">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-2">
+          <h3 className="text-lg md:text-xl font-bold text-white">
             {project.title}
           </h3>
 
           <div className="text-gray-200 prose prose-invert max-w-none">
-            <p className="whitespace-pre-line text-base md:text-lg leading-relaxed">
+            <p className="whitespace-pre-line text-sm md:text-base leading-relaxed">
               {project.description}
             </p>
           </div>
@@ -73,7 +73,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium underline underline-offset-4 transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium underline underline-offset-4 transition-colors"
             >
               Acessar projeto
               <svg
