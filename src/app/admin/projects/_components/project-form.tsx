@@ -19,6 +19,13 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { useProjectStore } from "@/stores/projectsStores";
 import { Switch } from "@/components/ui/switch";
@@ -37,10 +44,11 @@ const formSchema = z.object({
   description: z
     .string()
     .max(500, { message: "Os detalhes devem ter no máximo 500 caracteres." }),
+  sizes: z.enum(["SMALL", "MEDIUM", "LARGE"]),
   isActive: z.boolean(),
 });
 
-type FormValues = z.infer<typeof formSchema> & { isActive: boolean };
+type FormValues = z.infer<typeof formSchema>;
 
 interface AgendaFormProps {
   onSuccess?: () => void;
@@ -59,6 +67,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
       imageUrl: "",
       description: "",
       link: "",
+      sizes: "LARGE",
       isActive: true,
     },
   });
@@ -79,6 +88,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
         imageUrl: selectedProject.imageUrl || "",
         description: selectedProject.description || "",
         link: selectedProject.link || "",
+        sizes: selectedProject.sizes || "LARGE",
         isActive: selectedProject.isActive ?? true,
       });
       if (selectedProject.imageUrl) {
@@ -90,6 +100,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
         imageUrl: "",
         description: "",
         link: "",
+        sizes: "LARGE",
         isActive: true,
       });
       setImageSource("url");
@@ -148,6 +159,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
         imageUrl: values.imageUrl,
         description: values.description,
         link: values.link,
+        sizes: values.sizes,
         isActive: values.isActive,
       };
 
@@ -285,6 +297,32 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
               </FormControl>
               <FormDescription className="text-xs">
                 {field.value?.length || 0}/100 caracteres
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="sizes"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tamanho no Grid</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione o tamanho para o card do projeto" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="SMALL">Pequeno (1x1)</SelectItem>
+                  <SelectItem value="MEDIUM">Médio (1x2)</SelectItem>
+                  <SelectItem value="LARGE">Grande (2x2)</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                Isso define como o projeto aparecerá no grid da página inicial.
               </FormDescription>
               <FormMessage />
             </FormItem>

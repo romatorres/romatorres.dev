@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Size } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -26,14 +27,14 @@ export async function PUT(
 ) {
   try {
     const { id } = await context.params;
-    const { title, description, imageUrl, link, order, isActive } =
+    const { title, description, imageUrl, link, sizes, isActive } =
       await request.json();
     const projectUpdateData: {
       title?: string;
       description?: string;
       imageUrl?: string;
       link?: string;
-      order?: number;
+      sizes?: Size;
       isActive?: boolean;
     } = {};
 
@@ -41,7 +42,7 @@ export async function PUT(
     if (description !== undefined) projectUpdateData.description = description;
     if (imageUrl !== undefined) projectUpdateData.imageUrl = imageUrl;
     if (link !== undefined) projectUpdateData.link = link;
-    if (order !== undefined) projectUpdateData.order = order;
+    if (sizes !== undefined) projectUpdateData.sizes = sizes;
     if (isActive !== undefined) projectUpdateData.isActive = isActive;
 
     if (Object.keys(projectUpdateData).length > 0) {

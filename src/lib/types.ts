@@ -11,3 +11,4 @@ export type UserRole = PrismaUserRole;
  * Útil para validação com Zod ou para gerar opções em um select.
  */
 export const userRoles = ["ADMIN", "MANAGER", "USER"] as const;
+

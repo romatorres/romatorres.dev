@@ -2,6 +2,7 @@
 
 import { requireAuth, requireManagerOrAdmin } from "@/lib/auth-server-utils";
 import { prisma } from "@/lib/prisma";
+import { Size } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export async function listProjects() {
@@ -35,7 +36,7 @@ export async function createProject(data: {
   description: string;
   imageUrl: string;
   link: string;
-  order?: number;
+  sizes: Size;
   isActive?: boolean;
 }) {
   await requireManagerOrAdmin();
@@ -46,7 +47,7 @@ export async function createProject(data: {
       description: data.description,
       imageUrl: data.imageUrl,
       link: data.link,
-      order: data.order,
+      sizes: data.sizes,
       isActive: data.isActive ?? true,
     },
   });
@@ -63,7 +64,7 @@ export async function updateProject(
     description?: string;
     imageUrl?: string;
     link?: string;
-    order?: number;
+    sizes?: Size;
     isActive?: boolean;
   }
 ) {

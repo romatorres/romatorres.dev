@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { createProject, listProjects } from "@/app/admin/projects/action";
+import { Size } from "@prisma/client";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, description, imageUrl, link, order, isActive = true } = body;
+    const { title, description, imageUrl, link, sizes, isActive = true } = body;
 
-    if (!title || !description || !imageUrl) {
+    if (!title || !description || !imageUrl || !sizes) {
       return NextResponse.json(
         { message: "Todos os campos obrigatórios devem ser preenchidos." },
         { status: 400 }
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
       description,
       imageUrl,
       link,
-      order,
+      sizes: sizes as Size,
       isActive,
     });
 
