@@ -1,46 +1,75 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React from "react";
+import { ProjectProps } from "./_components/ProjectCard";
+import { ProjectGrid } from "./_components/ProjectGrid";
 import { useProjectStore } from "@/stores/projectsStores";
-import { Project } from "@/types/projects";
-import { MasonryGrid } from "@/components/landingpage/Projects/_components/MasonryGrid";
 import Image from "next/image";
-import { ProjectSkeleton } from "./_components/ProjectSkeleton";
-import { ProjectCard } from "./_components/ProjectCard";
-import { ProjectModal } from "./_components/ProjectModal";
+import project1 from "@/assets/project-1.jpg";
+import project2 from "@/assets/project-2.jpg";
+import project3 from "@/assets/project-3.jpg";
+import project4 from "@/assets/project-4.jpg";
+import project5 from "@/assets/project-5.jpg";
+import project6 from "@/assets/project-6.jpg";
 
-export default function Projects() {
+const Portfolio = () => {
   const { fetchProjects, projects } = useProjectStore();
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [shuffledProjects, setShuffledProjects] = useState<Project[]>([]);
+  const [isLoading] = React.useState(false);
 
-  useEffect(() => {
-    const loadProjects = async () => {
-      setIsLoading(true);
-      await fetchProjects();
-      setIsLoading(false);
-    };
-    loadProjects();
-  }, [fetchProjects]);
-
-  useEffect(() => {
-    if (projects.length > 0) {
-      const shuffleArray = (array: Project[]) => {
-        const newArr = [...array];
-        for (let i = newArr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-        }
-        return newArr;
-      };
-      setShuffledProjects(shuffleArray(projects));
-    }
-  }, [projects]);
+  const project: ProjectProps[] = [
+    {
+      title: "E-Commerce Platform",
+      description:
+        "Plataforma completa de e-commerce com carrinho, checkout e painel administrativo",
+      image: project1,
+      link: "#",
+      size: "large",
+    },
+    {
+      title: "Fitness Tracker App",
+      description: "Aplicativo mobile de rastreamento de exercícios e nutrição",
+      image: project2,
+      link: "#",
+      size: "medium",
+    },
+    {
+      title: "Luxury Brand Identity",
+      description: "Design completo de identidade visual para marca de luxo",
+      image: project3,
+      link: "#",
+      size: "small",
+    },
+    {
+      title: "Restaurant Website",
+      description:
+        "Website responsivo para restaurante com cardápio digital e reservas",
+      image: project4,
+      link: "#",
+      size: "small",
+    },
+    {
+      title: "Tech Startup Branding",
+      description: "Branding completo para startup de tecnologia",
+      image: project5,
+      link: "#",
+      size: "medium",
+    },
+    {
+      title: "Creative Agency Portfolio",
+      description: "Portfolio interativo para agência criativa",
+      image: project6,
+      link: "#",
+      size: "small",
+    },
+  ];
 
   return (
-    <section id="projects">
-      <div className="container mx-auto px-4 md:px-12 py-12 lg:py-16">
+    <section className="relative py-24 px-4 overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-mesh opacity-30" />
+
+      <div className="container relative z-10 mx-auto max-w-7xl">
+        {/* Section header */}
         <div className="py-12">
           <h2 className="font-primary text-secondary text-4xl md:text-5xl lg:text-7xl font-bold mb-3 text-center">
             PROJETOS
@@ -55,30 +84,11 @@ export default function Projects() {
           </div>
         </div>
 
-        {isLoading ? (
-          <MasonryGrid
-            items={Array.from({ length: 4 })}
-            renderItem={() => <ProjectSkeleton />}
-            getKey={(_, index) => index}
-          />
-        ) : (
-          <MasonryGrid
-            items={shuffledProjects}
-            renderItem={(project) => (
-              <ProjectCard
-                project={project}
-                onClick={() => setSelectedProject(project)}
-              />
-            )}
-            getKey={(project) => project.id}
-          />
-        )}
-
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
+        {/* Portfolio Grid */}
+        <ProjectGrid projects={project} isLoading={isLoading} />
       </div>
     </section>
   );
-}
+};
+
+export default Portfolio;
