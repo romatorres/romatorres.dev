@@ -8,23 +8,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
+import { Project } from "@/types/projects";
 
-export interface ProjectProps {
-  title: string;
-  description: string;
-  image: string | StaticImageData;
-  link: string;
+export interface ProjectCardProps extends Omit<Project, 'imageUrl' | 'sizes'> {
+  imageUrl: string;
   size?: "small" | "medium" | "large";
 }
 
 export const ProjectCard = ({
   title,
   description,
-  image,
+  imageUrl,
   link,
   size = "medium",
-}: ProjectProps) => {
+}: ProjectCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const sizeClasses = {
@@ -41,8 +39,10 @@ export const ProjectCard = ({
         <DialogTrigger asChild>
           <div className="relative h-full overflow-hidden cursor-pointer">
             <Image
-              src={image}
+              src={imageUrl}
               alt={title}
+              width={600}
+              height={400}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
 
@@ -59,16 +59,18 @@ export const ProjectCard = ({
 
                 {/* Action buttons */}
                 <div className="flex gap-3 pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                  <a
-                    href={link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary/60 transition-all duration-300 text-sm font-medium text-background"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Ver Projeto
-                  </a>
+                  {link && (
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary/60 transition-all duration-300 text-sm font-medium text-background"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Ver Projeto
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -79,8 +81,10 @@ export const ProjectCard = ({
       <DialogContent className="max-w-5xl mx-4 p-0 bg-background/95 backdrop-blur-xl border-border/50">
         <div className="relative">
           <Image
-            src={image}
+            src={imageUrl}
             alt={title}
+            width={800}
+            height={600}
             className="w-full h-auto max-h-[85vh] object-contain"
           />
           <div className="absolute bottom-0 left-0 right-0 p-6 bg-linear-to-t from-background via-background/80 to-transparent">

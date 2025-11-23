@@ -1,8 +1,9 @@
-import { ProjectCard, ProjectProps } from "./ProjectCard";
+import { ProjectCard } from "./ProjectCard";
 import { ProjectSkeleton } from "./ProjectSkeleton";
+import { Project } from "@/types/projects";
 
 interface ProjectGridProps {
-  projects: ProjectProps[];
+  projects: Project[];
   isLoading: boolean;
 }
 
@@ -19,9 +20,16 @@ export const ProjectGrid = ({ projects, isLoading }: ProjectGridProps) => {
           <ProjectSkeleton size="small" />
         </>
       ) : (
-        projects.map((project, index) => (
-          <ProjectCard key={index} {...project} />
-        ))
+        projects
+          .filter(project => project.isActive && project.imageUrl)
+          .map((project) => (
+            <ProjectCard 
+              key={project.id} 
+              {...project}
+              imageUrl={project.imageUrl!}
+              size={project.sizes?.toLowerCase() as "small" | "medium" | "large" || "medium"}
+            />
+          ))
       )}
     </div>
   );

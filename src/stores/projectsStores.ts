@@ -15,7 +15,7 @@ interface ProjectState {
 }
 
 export const useProjectStore = create<ProjectState>()(
-  devtools((set, get) => ({
+  devtools((set) => ({
     // CORRIGIDO: projects (plural) + array vazio
     projects: [],
     selectedProject: null,
@@ -23,9 +23,6 @@ export const useProjectStore = create<ProjectState>()(
     error: null,
 
     fetchProjects: async () => {
-      // Evita dupla busca
-      if (get().projects.length > 0) return;
-
       set({ loading: true, error: null });
       try {
         const response = await fetch("/api/project");
