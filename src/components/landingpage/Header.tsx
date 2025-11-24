@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { scrollToSection } from "@/components/landingpage/_components/scroll";
+import { scrollToSection } from "@/lib/scroll";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);

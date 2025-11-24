@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { scrollToSection } from "@/components/landingpage/_components/scroll";
+import { scrollToSection } from "@/lib/scroll";
 
 export default function Hero() {
   const [text, setText] = useState("");

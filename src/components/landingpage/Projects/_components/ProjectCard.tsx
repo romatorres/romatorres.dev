@@ -11,7 +11,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Project } from "@/types/projects";
 
-export interface ProjectCardProps extends Omit<Project, 'imageUrl' | 'sizes'> {
+export interface ProjectCardProps extends Omit<Project, "imageUrl" | "sizes"> {
   imageUrl: string;
   size?: "small" | "medium" | "large";
 }

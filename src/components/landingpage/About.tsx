@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { scrollToSection } from "@/components/landingpage/_components/scroll";
+import { scrollToSection } from "@/lib/scroll";
 
 export default function About() {
   const handleHireClick = (e: React.MouseEvent) => {

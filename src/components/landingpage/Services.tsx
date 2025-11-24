@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { scrollToSection } from "@/components/landingpage/_components/scroll";
+import { scrollToSection } from "@/lib/scroll";
 
 const services = [
   {
@@ -62,26 +62,28 @@ export default function Services() {
           {services.map((service) => (
             <div
               key={service.id}
-              className="flex items-center  bg-linear-to-t from-[#181818] to-[#121212] rounded-xl shadow-lg overflow-hidden hover:shadow-xl duration-300 hover:scale-105 transition-transform cursor-pointer"
+              className=" border border-neutral-800 hover:border-primary bg-linear-to-t from-[#181818] to-[#121212] rounded-xl shadow-lg overflow-hidden hover:shadow-xl duration-300"
             >
-              <div className="shrink-0 relative md:h-28 md:w-28 h-20 w-20 md:m-8 m-4">
-                {service.imageUrl && (
-                  <Image
-                    src={service.imageUrl}
-                    alt={service.title}
-                    fill
-                    className="object-cover rounded-lg"
-                  />
-                )}
-              </div>
-              {/* Textos */}
-              <div className="md:my-8 my-4 md:mr-8 mr-4 ">
-                <h3 className="text-secondary md:text-3xl text-xl font-primary uppercase md:font-bold font-semibold md:mb-2 mb-1">
-                  {service.title}
-                </h3>
-                <p className="text-white font-secondary md:text-sm text-xs line-clamp-4">
-                  {service.description}
-                </p>
+              <div className="flex items-center hover:scale-105 duration-500 transition-transform cursor-pointer">
+                <div className="shrink-0 relative md:h-28 md:w-28 h-20 w-20 md:m-8 m-4">
+                  {service.imageUrl && (
+                    <Image
+                      src={service.imageUrl}
+                      alt={service.title}
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  )}
+                </div>
+                {/* Textos */}
+                <div className="md:my-8 my-4 md:mr-8 mr-4 ">
+                  <h3 className="text-secondary md:text-3xl text-xl font-primary uppercase md:font-bold font-semibold md:mb-2 mb-1">
+                    {service.title}
+                  </h3>
+                  <p className="text-white font-secondary md:text-sm text-xs line-clamp-4">
+                    {service.description}
+                  </p>
+                </div>
               </div>
             </div>
           ))}

@@ -2,7 +2,7 @@
 
 import { ProjectGrid } from "./_components/ProjectGrid";
 import { ProjectsHeader } from "./_components/ProjectsHeader";
-import { useProjects } from "./hooks/useProjects";
+import { useProjects } from "../../../hooks/useProjects";
 
 const Portfolio = () => {
   const { projects, isLoading } = useProjects();
