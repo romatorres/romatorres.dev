@@ -49,9 +49,15 @@
 }
 
 :root {
-  html {
-    scroll-behavior: smooth;
-  }
+  --glow-soft: 0 0 20px rgba(252, 226, 25, 0.15);
+}
+
+@utility glow-soft {
+  box-shadow: var(--glow-soft);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {

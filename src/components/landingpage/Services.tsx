@@ -62,7 +62,7 @@ export default function Services() {
           {services.map((service) => (
             <div
               key={service.id}
-              className=" border border-neutral-800 hover:border-primary bg-linear-to-t from-[#181818] to-[#121212] rounded-xl shadow-lg overflow-hidden hover:shadow-xl duration-300"
+              className="border border-neutral-800 hover:border-primary/40 hover:glow-soft bg-linear-to-t from-[#181818] to-[#121212] rounded-xl shadow-lg overflow-hidden hover:shadow-xl duration-300"
             >
               <div className="flex items-center hover:scale-105 duration-500 transition-transform cursor-pointer">
                 <div className="shrink-0 relative md:h-28 md:w-28 h-20 w-20 md:m-8 m-4">
