@@ -8,8 +8,8 @@ const Portfolio = () => {
   const { projects, isLoading } = useProjects();
 
   return (
-    <section className="relative py-24 px-4 overflow-hidden">
-      <div className="container relative z-10 mx-auto max-w-7xl">
+    <section className="relative  overflow-hidden">
+      <div className="container relative z-10 mx-auto px-4 md:px-12 py-6 lg:py-16">
         <ProjectsHeader />
         <ProjectGrid projects={projects} isLoading={isLoading} />
       </div>

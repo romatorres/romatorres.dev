@@ -34,7 +34,7 @@ export default function Header() {
             : "lg:bg-background/20 bg-background"
         }`}
       >
-        <nav className="container mx-auto px-4 md:px-12 py-4 md:py-6">
+        <nav className="container mx-auto px-4 md:px-12 py-6">
           <div className="flex items-center justify-between">
             <a
               href="#header"

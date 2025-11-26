@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { scrollToSection } from "@/lib/scroll";
+import Image from "next/image";
 
 export default function Hero() {
   const [text, setText] = useState("");
@@ -43,7 +44,7 @@ export default function Hero() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollThreshold = window.innerHeight * 0.3; // 30% da altura da janela
+      const scrollThreshold = window.innerHeight * 0.67; // 30% da altura da janela
       setShowScrollHint(window.scrollY < scrollThreshold);
     };
     // Checa no carregamento inicial
@@ -72,7 +73,7 @@ export default function Hero() {
       </div>
       <div className="container mx-auto flex flex-col lg:flex-row justify-center items-center px-4">
         {/* Texto central */}
-        <div className="text-center text-secondary mt-20 lg:mt-0 mb-8 lg:mb-0 order-1 lg:order-2">
+        <div className="text-center text-secondary mt-24 lg:mt-0 mb-8 lg:mb-0 order-1 lg:order-2">
           <h3 className="text-sm font-medium font-primary mb-4 tracking-widest text-oswa">
             WEB DEVELOPER & UX DESIGNER
           </h3>
@@ -86,7 +87,47 @@ export default function Hero() {
           </p>
         </div>
       </div>
-      <div className="flex flex-col items-center gap-4 mt-20 w-full">
+
+      {/* Ícones mobile */}
+      <div className="lg:hidden flex gap-6">
+        <Image
+          src="/img/git.svg"
+          alt="Icone Github"
+          height={32}
+          width={32}
+          className="hover:scale-110 transition-transform duration-200 cursor-pointer"
+        />
+        <Image
+          src="/img/insta.svg"
+          alt="Icone Instagram"
+          height={32}
+          width={32}
+          className="hover:scale-110 transition-transform duration-200 cursor-pointer"
+        />
+        <Image
+          src="/img/x.svg"
+          alt="Icone X"
+          height={32}
+          width={32}
+          className="hover:scale-110 transition-transform duration-200 cursor-pointer"
+        />
+        <Image
+          src="/img/be.svg"
+          alt="Icone Be"
+          height={32}
+          width={32}
+          className="hover:scale-110 transition-transform duration-200 cursor-pointer"
+        />
+        <Image
+          src="/img/pinterest.svg"
+          alt="Icone Pinterest"
+          height={32}
+          width={32}
+          className="hover:scale-110 transition-transform duration-200 cursor-pointer"
+        />
+      </div>
+
+      <div className="flex flex-col items-center gap-4 lg:mt-20 mt-14 w-full">
         <div className="flex flex-col sm:flex-row gap-4 w-full items-center justify-center sm:mx-0 px-4">
           <Button
             variant="default"
