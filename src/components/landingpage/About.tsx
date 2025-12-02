@@ -69,17 +69,21 @@ export default function About() {
             </p>
             <div className="flex flex-col md:flex-row gap-4 mt-12">
               <Button
+                variant="default"
                 onClick={handleHireClick}
-                className="w-full md:w-auto px-12 rounded-xs"
+                className="group relative overflow-hidden px-16 rounded-xs sm:w-auto w-full"
               >
                 CONTRATAR
+                <div className="absolute inset-0 bg-black/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               </Button>
+
               <Button
-                onClick={(e) => scrollToSection(e, "projects")}
                 variant="outline"
-                className="w-full md:w-auto border-white rounded-xs px-8 text-white bg-background hover:bg-black-foreground"
+                onClick={(e) => scrollToSection(e, "projects")}
+                className="group relative overflow-hidden border-white rounded-xs px-14 text-white bg-background sm:w-auto w-full"
               >
                 MEUS TRABALHOS
+                <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               </Button>
             </div>
           </div>

@@ -358,7 +358,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
             control={form.control}
             name="isActive"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border border-gray-500 p-4">
                 <div className="space-y-0.5">
                   <FormLabel className="text-base">Ativar Projeto</FormLabel>
                 </div>

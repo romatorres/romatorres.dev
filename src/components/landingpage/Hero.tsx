@@ -132,17 +132,19 @@ export default function Hero() {
           <Button
             variant="default"
             onClick={handleHireClick}
-            className="px-16 rounded-xs sm:w-auto w-full"
+            className="group relative overflow-hidden px-16 rounded-xs sm:w-auto w-full"
           >
             CONTRATAR
+            <div className="absolute inset-0 bg-black/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
           </Button>
 
           <Button
             variant="outline"
             onClick={(e) => scrollToSection(e, "projects")}
-            className="border-white rounded-xs px-14 text-white bg-background hover:bg-black-foreground sm:w-auto w-full"
+            className="group relative overflow-hidden border-white rounded-xs px-14 text-white bg-background sm:w-auto w-full"
           >
             MEUS TRABALHOS
+            <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
           </Button>
         </div>
         {/* Versão Mabile - "ROLAR SCROLL" vertical */}
