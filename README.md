@@ -80,9 +80,9 @@ Você pode alternar entre o upload local (para desenvolvimento) e o upload para 
 1.  Para usar o Upload Local (para desenvolvimento):
     _ Crie um arquivo chamado .env.local na raiz do seu projeto (se ele ainda não existir).
     _ Adicione a seguinte linha a este arquivo:
-    1 NEXT_PUBLIC_UPLOAD_STRATEGY="local"
-    _ Reinicie seu servidor de desenvolvimento (npm run dev) para que a nova variável de ambiente seja carregada.
-    _ A partir de agora, as imagens que você fizer upload serão salvas na pasta public/uploads/projects do seu projeto.
+    1 NEXT*PUBLIC_UPLOAD_STRATEGY="local"
+    * Reinicie seu servidor de desenvolvimento (npm run dev) para que a nova variável de ambiente seja carregada.
+    \_ A partir de agora, as imagens que você fizer upload serão salvas na pasta public/uploads/projects do seu projeto.
 
 2.  Para usar o Upload para o Vercel Blob (para produção ou testes locais com o Blob):
     _ Certifique-se de que o Vercel Blob esteja configurado: Você precisa ter seu projeto vinculado à Vercel e um "Blob store" criado no seu painel da Vercel. Este processo irá fornecer a
@@ -90,8 +90,63 @@ Você pode alternar entre o upload local (para desenvolvimento) e o upload para 
     _ Para testes locais com o Vercel Blob:
     _ Adicione o BLOB_READ_WRITE_TOKEN ao seu arquivo .env.local:
     1 BLOB_READ_WRITE_TOKEN=seu_token_vercel_blob_aqui
-    _ Remova ou comente a linha NEXT_PUBLIC_UPLOAD_STRATEGY="local" do seu arquivo .env.local. Se NEXT_PUBLIC_UPLOAD_STRATEGY não estiver definido como "local", a aplicação usará o
+    _ Remova ou comente a linha NEXT*PUBLIC_UPLOAD_STRATEGY="local" do seu arquivo .env.local. Se NEXT_PUBLIC_UPLOAD_STRATEGY não estiver definido como "local", a aplicação usará o
     Vercel Blob por padrão.
-    _ Reinicie seu servidor de desenvolvimento.
-    _ Para deploy em produção na Vercel: O BLOB_READ_WRITE_TOKEN será configurado automaticamente pela Vercel se você tiver configurado o Blob store no painel do seu projeto. Você não
+    * Reinicie seu servidor de desenvolvimento.
+    \_ Para deploy em produção na Vercel: O BLOB_READ_WRITE_TOKEN será configurado automaticamente pela Vercel se você tiver configurado o Blob store no painel do seu projeto. Você não
     precisa definir NEXT_PUBLIC_UPLOAD_STRATEGY em produção, a menos que queira forçar o upload local (o que não é recomendado para produção).
+
+# GRID DE IMAGENS
+
+A base do cálculo está nesta linha em ProjectGrid.tsx:
+className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[300px] gap-4"
+
+Isso nos diz que:
+
+- A altura de cada "célula" do grid (row-span-1) é de 300px.
+- O espaçamento (gap) entre as células é de 1rem (geralmente 16px).
+
+Vamos calcular as dimensões para cada sizeClass:
+
+1. Small (md:col-span-1 md:row-span-1)
+
+- Ocupa: 1 coluna x 1 linha.
+- Cálculo da Altura: 1 \* 300px = 300px.
+- Cálculo da Largura: A largura de uma coluna no layout de 3 colunas (lg:grid-cols-3) é a mais importante. Assumindo um container padrão, a largura será em torno de 300-350px.
+- Proporção: Aproximadamente 1:1 (Quadrada).
+- Tamanho Recomendado (2x para Retina): 600 x 600 pixels
+
+2. Medium (md:col-span-1 md:row-span-2)
+
+- Ocupa: 1 coluna x 2 linhas.
+- Cálculo da Altura: (2 \* 300px) + 16px (gap) = 616px.
+- Cálculo da Largura: A mesma de 1 coluna (~300-350px).
+- Proporção: Aproximadamente 1:2 (Retrato/Vertical).
+- Tamanho Recomendado (2x para Retina): 600 x 1232 pixels
+
+3. Large (md:col-span-2 md:row-span-2)
+
+- Ocupa: 2 colunas x 2 linhas.
+- Cálculo da Altura: (2 \* 300px) + 16px (gap) = 616px.
+- Cálculo da Largura: (2 \* ~320px) + 16px (gap) = 656px.
+- Proporção: Aproximadamente 1:1 (Quadrada).
+- Tamanho Recomendado (2x para Retina): 1312 x 1232 pixels (Pode arredondar para 1300 x 1230 para manter a proporção).
+
+---
+
+Tabela Resumo
+
+┌────────────┬──────────────────┬───────────────────┬────────────────────────────────────┐
+│ Size Class │ Proporção Visual │ Dimensões Mínimas │ Dimensões Recomendadas (Retina/HD) │
+├────────────┼──────────────────┼───────────────────┼────────────────────────────────────┤
+│ Small │ 1:1 (Quadrado) │ 320 x 300 px │ 600 x 600 px │
+│ Medium │ 1:2 (Vertical) │ 320 x 616 px │ 600 x 1232 px │
+│ Large │ 1:1 (Quadrado) │ 656 x 616 px │ 1312 x 1232 px │
+└────────────┴──────────────────┴───────────────────┴────────────────────────────────────┘
+
+Recomendações Adicionais:
+
+1.  Priorize a Proporção: O mais importante é manter a proporção (aspect ratio). Mesmo que os tamanhos não sejam exatamente esses, manter a proporção correta fará com que as imagens não fiquem distorcidas.
+2.  Use 2x para Qualidade: Fornecer imagens com o dobro da dimensão de exibição (conforme a coluna "Recomendadas") garante que elas fiquem nítidas em telas de alta densidade (Retina), como em MacBooks e smartphones modernos. O  
+    componente <Image> do Next.js fará o trabalho de otimizar e servir o tamanho correto.
+3.  Otimização: Use formatos modernos como WebP e comprima as imagens (com ferramentas como TinyPNG ou Squoosh) antes de fazer o upload para um balanceamento ideal entre qualidade e velocidade de carregamento.
