@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth-server-utils";
 import { Size } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -26,6 +27,7 @@ export async function PUT(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await context.params;
     const { title, description, imageUrl, link, sizes, isActive } =
       await request.json();
@@ -71,6 +73,7 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await context.params;
     await prisma.project.delete({
       where: { id: id },

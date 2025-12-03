@@ -46,8 +46,8 @@ export const ProjectCard = ({
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
 
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500" />
+            {/* Gradient overlay 
+            <div className="absolute inset-0 bg-linear-to-t from-background/30 via-background/10 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500" />*/}
 
             {/* Content */}
             <div className="absolute inset-0 p-6 flex flex-col justify-end">
@@ -58,13 +58,13 @@ export const ProjectCard = ({
                 </p>
 
                 {/* Action buttons */}
-                <div className="flex gap-3 pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                <div className="flex gap-3 pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 max-md:opacity-100 md:opacity-0 md:group-hover:opacity-100">
                   {link && (
                     <a
                       href={link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary/60 transition-all duration-300 text-sm font-medium text-background"
+                      className=" flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary/60 transition-all duration-300 text-sm font-medium text-background"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <ExternalLink className="w-4 h-4" />

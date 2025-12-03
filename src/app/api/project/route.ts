@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
-import { createProject, listProjects } from "@/app/admin/projects/action";
+import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth-server-utils";
 import { Size } from "@prisma/client";
 
 export async function POST(request: Request) {
   try {
+    await requireAdmin();
     const body = await request.json();
     const { title, description, imageUrl, link, sizes, isActive = true } = body;
 
@@ -14,13 +16,15 @@ export async function POST(request: Request) {
       );
     }
 
-    const project = await createProject({
-      title,
-      description,
-      imageUrl,
-      link,
-      sizes: sizes as Size,
-      isActive,
+    const project = await prisma.project.create({
+      data: {
+        title,
+        description,
+        imageUrl,
+        link,
+        sizes: sizes as Size,
+        isActive,
+      },
     });
 
     return NextResponse.json(project, { status: 201 });
@@ -37,15 +41,22 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const project = await listProjects();
-    return NextResponse.json(project);
+    const projects = await prisma.project.findMany({
+      where: {
+        isActive: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return NextResponse.json(projects);
   } catch (error: unknown) {
     console.error("Error fetching project:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Erro ao buscar um projeto.";
     return NextResponse.json(
       { message: errorMessage },
-      { status: errorMessage.includes("permissão") ? 403 : 500 }
+      { status: 500 }
     );
   }
 }
