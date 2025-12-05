@@ -37,14 +37,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## VERCEL BLOB
 
-A refatoração para Vercel Blob com pré-visualização de imagens está concluída. Agora, preciso instruir o usuário a conectar seu repositório a um projeto Vercel, adicionar um armazenamento Blob, criar um arquivo .env.local e copiar o
-BLOB_READ_WRITE_TOKEN para ele. Então, minha parte estará finalizada. A refatoração do código para Vercel Blob e a pré-visualização de imagens estão concluídas. Agora, preciso fornecer ao usuário instruções claras e passo a passo para a
-configuração necessária da plataforma Vercel, sem a qual o recurso de upload não funcionará. Pronto! Concluí a refatoração do código. Agora, o sistema de upload de imagens utiliza o Vercel Blob e o
-formulário exibe uma pré-visualização da imagem.
-
-Porém, há um passo final e muito importante que você precisa fazer para que tudo funcione:
-
+Passo para que tudo funcione:
 A nova implementação depende de uma "chave secreta" (token) que conecta sua aplicação ao Vercel Blob. Sem ela, o upload de imagens falhará.
+
+BLOB_READ_WRITE_TOKEN
 
 Como configurar (ambiente local e produção):
 
@@ -80,9 +76,10 @@ Você pode alternar entre o upload local (para desenvolvimento) e o upload para 
 1.  Para usar o Upload Local (para desenvolvimento):
     _ Crie um arquivo chamado .env.local na raiz do seu projeto (se ele ainda não existir).
     _ Adicione a seguinte linha a este arquivo:
-    1 NEXT*PUBLIC_UPLOAD_STRATEGY="local"
-    * Reinicie seu servidor de desenvolvimento (npm run dev) para que a nova variável de ambiente seja carregada.
-    \_ A partir de agora, as imagens que você fizer upload serão salvas na pasta public/uploads/projects do seu projeto.
+    1 NEXT\*PUBLIC_UPLOAD_STRATEGY="local"
+
+    - Reinicie seu servidor de desenvolvimento (npm run dev) para que a nova variável de ambiente seja carregada.
+      \_ A partir de agora, as imagens que você fizer upload serão salvas na pasta public/uploads/projects do seu projeto.
 
 2.  Para usar o Upload para o Vercel Blob (para produção ou testes locais com o Blob):
     _ Certifique-se de que o Vercel Blob esteja configurado: Você precisa ter seu projeto vinculado à Vercel e um "Blob store" criado no seu painel da Vercel. Este processo irá fornecer a
@@ -90,11 +87,11 @@ Você pode alternar entre o upload local (para desenvolvimento) e o upload para 
     _ Para testes locais com o Vercel Blob:
     _ Adicione o BLOB_READ_WRITE_TOKEN ao seu arquivo .env.local:
     1 BLOB_READ_WRITE_TOKEN=seu_token_vercel_blob_aqui
-    _ Remova ou comente a linha NEXT*PUBLIC_UPLOAD_STRATEGY="local" do seu arquivo .env.local. Se NEXT_PUBLIC_UPLOAD_STRATEGY não estiver definido como "local", a aplicação usará o
+    _ Remova ou comente a linha NEXT\*PUBLIC_UPLOAD_STRATEGY="local" do seu arquivo .env.local. Se NEXT_PUBLIC_UPLOAD_STRATEGY não estiver definido como "local", a aplicação usará o
     Vercel Blob por padrão.
-    * Reinicie seu servidor de desenvolvimento.
-    \_ Para deploy em produção na Vercel: O BLOB_READ_WRITE_TOKEN será configurado automaticamente pela Vercel se você tiver configurado o Blob store no painel do seu projeto. Você não
-    precisa definir NEXT_PUBLIC_UPLOAD_STRATEGY em produção, a menos que queira forçar o upload local (o que não é recomendado para produção).
+    - Reinicie seu servidor de desenvolvimento.
+      \_ Para deploy em produção na Vercel: O BLOB_READ_WRITE_TOKEN será configurado automaticamente pela Vercel se você tiver configurado o Blob store no painel do seu projeto. Você não
+      precisa definir NEXT_PUBLIC_UPLOAD_STRATEGY em produção, a menos que queira forçar o upload local (o que não é recomendado para produção).
 
 # GRID DE IMAGENS
 
