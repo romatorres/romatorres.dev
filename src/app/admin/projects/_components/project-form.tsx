@@ -111,32 +111,12 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
     if (!file) return;
     setIsUploading(true);
 
-    const uploadStrategy = process.env.NEXT_PUBLIC_UPLOAD_STRATEGY;
-
     try {
-      let imageUrl: string;
-
-      if (uploadStrategy === "local") {
-        // Local upload logic
-        const formData = new FormData();
-        formData.append("file", file);
-        const response = await fetch("/api/upload-local", {
-          method: "POST",
-          body: formData,
-        });
-        const result = await response.json();
-        if (!result.success) {
-          throw new Error(result.message || "Erro no upload local.");
-        }
-        imageUrl = result.url;
-      } else {
-        // Vercel Blob logic (default)
-        const newBlob = await upload(file.name, file, {
-          access: "public",
-          handleUploadUrl: "/api/upload",
-        });
-        imageUrl = newBlob.url;
-      }
+      const newBlob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+      });
+      const imageUrl = newBlob.url;
 
       form.setValue("imageUrl", imageUrl, { shouldValidate: true });
       toast.success("Imagem enviada com sucesso!");

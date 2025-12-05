@@ -9,10 +9,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     const jsonResponse = await handleUpload({
       body,
       request,
-      onBeforeGenerateToken: async (pathname: string) => {
+      onBeforeGenerateToken: async () => {
         try {
           await requireManagerOrAdmin();
-        } catch (error) {
+        } catch {
           throw new Error("Não autorizado");
         }
 
@@ -35,7 +35,8 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     return NextResponse.json(jsonResponse);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Erro desconhecido";
+    const message =
+      error instanceof Error ? error.message : "Erro desconhecido";
     return NextResponse.json(
       { error: message },
       { status: message === "Não autorizado" ? 401 : 400 }
