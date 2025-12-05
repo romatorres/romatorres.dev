@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { LoginForm } from "./_components/login-form";
 import { Card } from "@/components/ui/card";
 
@@ -17,7 +16,7 @@ export default function Login() {
 
             <LoginForm />
 
-            <div className="text-center text-sm text-gray-300">
+            {/*     <div className="text-center text-sm text-gray-300">
               <p>
                 Não tem uma conta?{" "}
                 <Link
@@ -27,7 +26,7 @@ export default function Login() {
                   Cadastre-se
                 </Link>
               </p>
-            </div>
+            </div> */}
           </div>
         </Card>
       </div>

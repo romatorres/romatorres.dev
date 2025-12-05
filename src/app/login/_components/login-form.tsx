@@ -6,7 +6,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { FaGoogle } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -64,12 +63,12 @@ export function LoginForm() {
     );
   }
 
-  async function handleSignInGoogle() {
+  /* async function handleSignInGoogle() {
     await authClient.signIn.social({
       provider: "google",
       callbackURL: "/admin",
     });
-  }
+  } */
 
   return (
     <Form {...form}>
@@ -146,7 +145,7 @@ export function LoginForm() {
           )}
         </Button>
 
-        <div className="relative mb-8">
+        {/*  <div className="relative mb-8">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-gray-400" />
           </div>
@@ -155,9 +154,9 @@ export function LoginForm() {
               Ou continue com
             </span>
           </div>
-        </div>
+        </div> */}
 
-        <Button
+        {/* <Button
           type="button"
           variant="outline"
           className="w-full border-white bg-transparent"
@@ -165,7 +164,7 @@ export function LoginForm() {
         >
           <FaGoogle className="mr-2 h-4 w-4 text-destructive" />
           <span className="text-white">Entrar com Google</span>
-        </Button>
+        </Button> */}
       </form>
     </Form>
   );
