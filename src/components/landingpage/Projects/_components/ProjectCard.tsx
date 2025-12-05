@@ -46,12 +46,9 @@ export const ProjectCard = ({
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
 
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-linear-to-t from-background/30 via-background/10 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500" />
-
             {/* Content */}
             <div className="absolute inset-0 p-6 flex flex-col justify-end">
-              <div className="space-y-3 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+              <div className="space-y-1 transform translate-y-20 group-hover:translate-y-0 transition-transform duration-500">
                 <h3 className="text-2xl font-bold text-secondary">{title}</h3>
                 <p className="text-sm text-gray-300 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   {description}
