@@ -115,6 +115,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
       const newBlob = await upload(file.name, file, {
         access: "public",
         handleUploadUrl: "/api/upload",
+        addRandomSuffix: true,
       });
       const imageUrl = newBlob.url;
 
