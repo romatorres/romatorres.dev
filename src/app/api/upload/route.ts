@@ -17,6 +17,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         }
 
         return {
+          addRandomSuffix: true,
           allowedContentTypes: [
             "image/jpeg",
             "image/png",
