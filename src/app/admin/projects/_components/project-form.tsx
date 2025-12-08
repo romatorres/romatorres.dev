@@ -57,7 +57,6 @@ interface AgendaFormProps {
 export function ProjectForm({ onSuccess }: AgendaFormProps) {
   const { createProject, updateProject, selectedProject, setSelectedProject } =
     useProjectStore();
-  const [imageSource, setImageSource] = useState<"url" | "file">("url");
   const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<FormValues>({
@@ -91,9 +90,6 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
         sizes: selectedProject.sizes || "LARGE",
         isActive: selectedProject.isActive ?? true,
       });
-      if (selectedProject.imageUrl) {
-        setImageSource("url");
-      }
     } else {
       form.reset({
         title: "",
@@ -103,7 +99,6 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
         sizes: "LARGE",
         isActive: true,
       });
-      setImageSource("url");
     }
   }, [selectedProject, form, isEditing]);
 
@@ -190,54 +185,28 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
         <FormField
           control={form.control}
           name="imageUrl"
-          render={({ field }) => (
+          render={({}) => (
             <FormItem>
               <FormLabel className="flex items-center font-medium">
-                <FileImage className="h-4 w-4 mr-2" />
+                <FileImage className="h-4 w-4 mr-1" />
                 Imagem do projeto
               </FormLabel>
-              <div className="flex gap-2 mb-2">
-                <Button
-                  type="button"
-                  variant={imageSource === "url" ? "secondary" : "ghost"}
-                  onClick={() => setImageSource("url")}
-                >
-                  URL
-                </Button>
-                <Button
-                  type="button"
-                  variant={imageSource === "file" ? "secondary" : "ghost"}
-                  onClick={() => setImageSource("file")}
-                >
-                  Upload
-                </Button>
-              </div>
-              {imageSource === "url" ? (
-                <FormControl>
+
+              <FormControl>
+                <div className="flex items-center gap-2">
                   <Input
-                    placeholder="https://example.com/image.jpg"
-                    {...field}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) {
+                        handleImageUpload(e.target.files[0]);
+                      }
+                    }}
+                    disabled={isUploading}
                   />
-                </FormControl>
-              ) : (
-                <FormControl>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        if (e.target.files?.[0]) {
-                          handleImageUpload(e.target.files[0]);
-                        }
-                      }}
-                      disabled={isUploading}
-                    />
-                    {isUploading && (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    )}
-                  </div>
-                </FormControl>
-              )}
+                  {isUploading && <Loader2 className="h-4 w-4 animate-spin" />}
+                </div>
+              </FormControl>
 
               {watchedImageUrl && (
                 <div className="mt-4 relative w-48 h-48 rounded-md overflow-hidden border">
@@ -251,9 +220,7 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
               )}
 
               <FormDescription className="text-xs">
-                {imageSource === "file"
-                  ? "Faça o upload de uma imagem."
-                  : "Insira a URL de uma imagem."}
+                Faça o upload de uma imagem
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -275,9 +242,6 @@ export function ProjectForm({ onSuccess }: AgendaFormProps) {
                   {...field}
                 />
               </FormControl>
-              <FormDescription className="text-xs">
-                {field.value?.length || 0}/100 caracteres
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
